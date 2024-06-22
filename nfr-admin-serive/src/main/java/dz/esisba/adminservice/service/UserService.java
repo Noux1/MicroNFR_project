@@ -90,18 +90,6 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-//    public UserResponse createUser(UserCreateRequest request){
-//    String uuid = keycloakService.createUser(request);
-//    if (uuid == null  || uuid.isEmpty()){
-//        throw new RuntimeException("Could not create keycloak User");
-//    }
-//       User newUser = userMapper.requestToEntity(request);
-//        newUser.setUuid(uuid);
-//        User savedUser = userRepository.save(newUser);
-//       return userMapper.entityToResponse(savedUser);
-//    }
-    //Second Method
-
     public UserResponse createUser(UserCreateRequest request) {
         String uuid = keycloakService.createUser(request);
         if (uuid == null  || uuid.isEmpty()) {
@@ -125,11 +113,8 @@ public class UserService {
                     .build();
 
             kafkaTemplate.send("UserTopic", userCreatedEvent);
-            System.out.println(userCreatedEvent);
-//            notifyUser(savedUser);
-
+//            System.out.println(userCreatedEvent);
             return userMapper.entityToResponse(savedUser);
-
 
         } catch (Exception e) {
             keycloakService.deleteUser(uuid);
@@ -137,15 +122,6 @@ public class UserService {
         }
 
     }
-//    public void notifyUser(User user) {
-//        NotificationPayload payload = new NotificationPayload();
-//        payload.setUuid(user.getUuid());
-//        payload.setChannel(NotificationChannel.EMAIL);
-//        payload.setTemplateCode(NotificationTemplateCode.USER_CREATED_EMAIL);
-//        payload.setTime(LoacalDateTime.now());
-//        kafkaTemplate.send("NotificationTopic", payload);
-//    }
-
 
     public User getOneByUsername(String username){
         User user = userRepository.findByUserName(username)
@@ -159,15 +135,6 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("User not found with id: " + id));
         return userMapper.entityToResponse(user);
     }
-
-
-//    public UserResponse getUserByUuid(Long uuid)
-//    {
-//        User user = userRepository.findUserByUuid(uuid)
-//                .orElseThrow(() -> new NoSuchElementException("user not found with uuid " + uuid ));
-//        return userMapper.entityToResponse(user);
-//    }
-
 
     public UserResponse updateUser(UserRequest request , Long id){
         User existingUser = userRepository.findById(id)
@@ -189,8 +156,7 @@ public class UserService {
                 .action("updateUser")
                 .build();
         kafkaTemplate.send("UserTopic", userUpdatedEvent);
-        System.out.println(userUpdatedEvent);
-
+//        System.out.println(userUpdatedEvent);
         return userMapper.entityToResponse(updatedUser);
     }
 
@@ -206,6 +172,7 @@ public class UserService {
                 .build();
         kafkaTemplate.send("UserTopic", userDeleteEvent);
     }
+
     public UserResponse enableDisableUser(Long id , Boolean enable){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found with id: " + id));
@@ -215,13 +182,13 @@ public class UserService {
         if (enable){
             status = "activated";
         }else{
-            status = "desactivated";
+            status = "deactivated";
         }
         NotificationEvent notificationEvent = NotificationEvent.builder()
                 .uuid(user.getUuid())
                 .subject(" Enable/disable user ")
                 .body("Your account is "+ status)
-                .notificationChannel(NotificationChannel.ALL)
+                .notificationChannel(NotificationChannel.EMAIL)
                 .time(LocalDateTime.now())
                 .utilisateur(this.getUsername())
                 .utilisateur(this.getUsername())

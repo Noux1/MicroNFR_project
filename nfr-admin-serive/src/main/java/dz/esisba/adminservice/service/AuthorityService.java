@@ -35,33 +35,18 @@ public class AuthorityService {
 
     private final AuthorityMapper authorityMapper;
 
-
-
-//    public PageImpl<AuthorityResponse> findAllFilter(PageRequest pageRequest, List<Clause> filter) {
-//
-//        Specification<Authority> specification = new GenericSpecification<>(filter);
-//        List<AuthorityResponse> moduleResponseList;
-//        Page<Authority> page;
-//        page = authorityRepository.findAll(specification, pageRequest);
-//
-//        moduleResponseList = page.getContent().stream()
-//                .map(authorityMapper::entityToResponse)
-//                .collect(Collectors.toList());
-//        return new PageImpl<>(moduleResponseList, pageRequest, page.getTotalElements());
-//    }
-
     public AuthorityResponse getOne(Long id) {
         Authority module = authorityRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Authority not found with id: " + id));
         return authorityMapper.entityToResponse(module);
     }
+
     public List<AuthorityResponse> getAll(){
         List<Authority> authorities=authorityRepository.findAll();
         return authorities.stream()
                 .map(authorityMapper::entityToResponse)
                 .collect(Collectors.toList());
     }
-
 
     public AuthorityResponse create(AuthorityRequest request) {
         Authority created = authorityRepository.save(authorityMapper.requestToEntity(request));
@@ -94,12 +79,12 @@ public class AuthorityService {
                 .orElseThrow(() -> new EntityNotFoundException("Authority not found with name: " + libelle + " in module: " + moduleCode));
     }
 
-
     public void deactivateAuthoritiesByAuthorityType(Long authorityTypeId) {
         List<Authority> authorities = authorityRepository.findByAuthorityType_IdAuthorityType(authorityTypeId);
         authorities.forEach(authority -> authority.setActif(false));
         authorityRepository.saveAll(authorities);
     }
+
     public void activateAuthoritiesByAuthorityType(Long authorityTypeId){
         List<Authority> authorities = authorityRepository.findByAuthorityType_IdAuthorityType(authorityTypeId);
         authorities.forEach(authority -> authority.setActif(true));

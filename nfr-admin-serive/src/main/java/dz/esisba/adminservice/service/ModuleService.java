@@ -43,19 +43,12 @@ public class ModuleService {
         Module module = moduleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Module not found with id: " + id));
         return moduleMapper.entityToResponse(module);
+
     }
-    ///nacera
     public Module getModuleByCode(String code) {
         return moduleRepository.findByModuleCode(code)
                 .orElseThrow(() -> new NotFoundException("Module not found with code: " + code));
     }
-
-
-//    public ModuleResponse getModuleByName(String name){
-//        Module module = moduleRepository.findByModuleName(name)
-//                .orElseThrow(() -> new NoSuchElementException("Module not found with name: " + name));
-//        return moduleMapper.entityToResponse(module);
-//    }
 
     public ModuleResponse updateModule (ModuleRequest request, Long id) {
         Module existingModule = moduleRepository.findById(id)

@@ -28,13 +28,13 @@ public class PermissionService {
         Jwt jwt = jwtAuthentication.getToken();
 
         String username = (String) jwt.getClaims().get("preferred_username");
-// get authority by libelle and module name
+        // get authority by libelle and module name
         Authority authority = authorityService.getAuthorityByLibelleAndModule(authorityLibelle, moduleCode);
         Module module = moduleService.getModuleByCode(moduleCode);
         // get user
         User user=userService.getOneByUsername(username);
         if (user==null){
-            return false; // user n existe pas renvoyer false
+            return false;// user n existe pas renvoyer false
         }
         //Vérifier si l'utilisateur a l'autorité demandée
         boolean hasAuth=user.getUserAuthorities().stream().anyMatch(auth -> auth.equals(authority));

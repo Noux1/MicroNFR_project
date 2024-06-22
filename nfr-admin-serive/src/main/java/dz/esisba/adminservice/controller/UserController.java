@@ -3,32 +3,29 @@ package dz.esisba.adminservice.controller;
 import dz.esisba.adminservice.dto.user.UserCreateRequest;
 import dz.esisba.adminservice.dto.user.UserRequest;
 import dz.esisba.adminservice.dto.user.UserResponse;
-
 import dz.esisba.adminservice.enums.keycloakRequiredAction;
-import dz.esisba.adminservice.repository.UserRepository;
 import dz.esisba.adminservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpUtils;
 import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
-//@CrossOrigin(origins = "*")
 public class UserController {
     private final UserService userService;
 
+
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService ){
         this.userService= userService;
 
     }
+
     @GetMapping()
     @PreAuthorize("hasAuthority('USER_GET_ALL')")
     public ResponseEntity<Object> getAll(){
@@ -256,15 +253,6 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-//    @PutMapping("/{userId}/group/{groupId}")
-//    @PreAuthorize("hasAuthority('USER_GROUP_ADD')")
-//    public ResponseEntity<UserResponse> addUserToGroup(@PathVariable Long userId, @PathVariable Long groupId) {
-//        UserResponse updatedUser = userService.addUserToGroup(userId, groupId);
-//        return ResponseEntity.ok(updatedUser);
-//    }
-
 
     @GetMapping("/uuid/{uuid}")
     @PreAuthorize("hasAuthority('USER_GET_UUID')")
