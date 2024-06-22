@@ -1,0 +1,190 @@
+
+
+# # spring boot file 
+# # stages:
+# #  -build
+# #  -test
+# #  -deploy
+
+# # variables:
+
+
+# # test:
+# #  stage: test
+# #  image: maven:3.8.5-openjdk-17
+# #  script: 
+  
+# #   - echo "Executing SpringBoot application"
+# #   - mvn clean test site
+# #   artifacts: 
+# #     when: always 
+# #     name: "SpringBoot Report"
+# #     paths:
+# #      -target/site/*
+# #     expire_in: 1 week
+
+# # build:
+# #  stage: build
+# #  image: docker:26.0.0
+# #  services: 
+# #   - docker:26.0.0-dind
+# #  variables:
+# #  DOCKER_TLS_CERTDIR: "/certs"
+# #  before_script: 
+# #   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
+# #  script: 
+# #   - echo "Building SpringBoot application"
+# #   - docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE_ADMIN ./nfr-notification-service
+# #   - docker push  $DOCKER_USERNAME/$DOCKER_IMAGE_ADMIN  
+
+# #  deploy:
+# #  stage: deploy
+# #  script: 
+
+
+
+
+#  # node js  file 
+# stages:
+#  -build
+#  -test
+#  -deploy
+
+# variables:
+
+
+# # test:
+# #  stage: test
+# #  image: node:20.12
+# #  before_script: 
+# #   - npm install
+# #  script: 
+# #   - npm test
+# #   artifacts: 
+# #     when: always 
+# #     name: "node js Report"
+# #     paths:
+# #      - path/to/test/reports/*
+# #     expire_in: 1 week
+
+# build:
+#  stage: build
+#  image: docker:26.0.0
+#  services: 
+#   - docker:26.0.0-dind
+#  variables:
+#  DOCKER_TLS_CERTDIR: "/certs"
+#  before_script: 
+#   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
+#  script: 
+#   - docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE_AUDIT ./nfr-auditlog-service
+#   - docker push  $DOCKER_USERNAME/$DOCKER_IMAGE_AUDIT  
+
+#  deploy:
+#  stage: deploy
+#  script: 
+
+
+
+#  stages:
+#  -build
+#  -test
+#  -deploy
+
+# variables:
+
+
+# # test:
+# #  stage: test
+# #  image: node:20.12
+# #  before_script: 
+# #   - npm install
+# #  script: 
+# #   - npm test
+# #   artifacts: 
+# #     when: always 
+# #     name: "node js Report"
+# #     paths:
+# #      - path/to/test/reports/*
+# #     expire_in: 1 week
+
+# build:
+#  stage: build
+#  image: docker:26.0.0
+#  services: 
+#   - docker:26.0.0-dind
+#  variables:
+#  DOCKER_TLS_CERTDIR: "/certs"
+#  before_script: 
+#   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
+#  script: 
+#   - docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE_AUDIT ./nfr-notification-service
+#   - docker push  $DOCKER_USERNAME/$DOCKER_IMAGE_NOTIFICATION 
+
+#  deploy:
+#  stage: deploy
+
+#  script: 
+
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+build:
+  stage: build
+  image: docker:26.0.0
+  services:
+    - docker:26.0.0-dind
+  before_script:
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  script:
+    - echo "Building Node.js application"
+    - docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE_AUDIT ./nfr-auditlog-service
+    - docker push $DOCKER_USERNAME/$DOCKER_IMAGE_AUDIT
+
+# test:
+#   stage: test
+#   image: node:20.12
+#   before_script:
+#     - npm install
+#   script:
+#     - npm test
+#   artifacts:
+#     when: always
+#     name: "Node.js Report"
+#     paths:
+#       - path/to/test/reports/*
+#     expire_in: 1 week
+
+# deploy:
+#   stage: deploy
+#   script:
+#     - echo "Deploying Node.js application"
+#     # Add deployment script here
+
+
+#  stages:
+#  -build
+#  -test
+#  -deploy
+
+# variables:
+
+
+# build:
+#  stage: build
+#  image: docker:26.0.0
+#  services: 
+#   - docker:26.0.0-dind
+#  variables:
+#  DOCKER_TLS_CERTDIR: "/certs"
+#  before_script: 
+#   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
+#  script: 
+#   - docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE_AUDIT ./nfr-notification-service
+#   - docker push  $DOCKER_USERNAME/$DOCKER_IMAGE_NOTIFICATION 

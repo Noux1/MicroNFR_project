@@ -1,0 +1,58 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ms-admin
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:8088/auth/realms/Nfr-realm
+          jwk-set-uri: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/certs
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5434/admin-service-db
+    username: nour
+    password: nour
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
+        session_factory:
+          interceptor: dz.esisba.adminservice.config.auditlog.EntityChangeInterceptor
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: auditLogTopic
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+      properties:
+        spring.json.add.type.headers: false
+        spring.json.type.mapping:
+          userCreatedEvent: dz.esisba.adminservice.events.user.UserCreatedEvent
+          userDeleteEvent: dz.esisba.adminservice.events.user.UserDeleteEvent
+          NotificationEvent: dz.esisba.adminservice.events.notification.NotificationEvent
+          event: dz.esisba.adminservice.config.auditlog.EntityTrace
+app:
+  realm: Nfr-realm
+  auth-server-url: http://localhost:8088/auth
+  admin-client-id: nfr-client
+
+  admin-client-secret: 7kv35AYYwesrgJz1bSERtNTEOnKkSR2W
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

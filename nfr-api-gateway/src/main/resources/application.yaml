@@ -1,0 +1,55 @@
+server:
+  port: 7777
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:3000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+      routes:
+        - id: route1
+          predicates:
+            - Path=/ms-admin/**
+          filters:
+            - RewritePath=/ms-admin/(?<s>.*), /${s}
+          uri: lb://ms-admin
+        - id: route2
+          predicates:
+            - Path=/ms-notification/**
+          filters:
+            - RewritePath=/ms-notification/(?<s>.*), /${s}
+          uri: lb://ms-notifications
+        - id: route3
+          predicates:
+            - Path=/ms-audit/**
+          filters:
+            - RewritePath=/ms-audit/(?<s>.*), /${s}
+          uri: lb://ms-audit

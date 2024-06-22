@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9ab8526c-c2b9-43d6-8c05-e6fd5dafc1e5" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="staging" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLabMergeRequestFiltersHistory">{
+        &quot;lastFilter&quot;: {
+        &quot;state&quot;: &quot;OPENED&quot;,
+        &quot;assignee&quot;: {
+        &quot;type&quot;: &quot;org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue&quot;,
+        &quot;username&quot;: &quot;No_uX&quot;,
+        &quot;fullname&quot;: &quot;Nour Belsaadate&quot;
+        }
+        }
+        }</component>
+  <component name="GitLabMergeRequestsSettings">{
+        &quot;selectedUrlAndAccountId&quot;: {
+        &quot;first&quot;: &quot;https://gitlab.com/l.dergham/nfr_system.git&quot;,
+        &quot;second&quot;: &quot;da6ab2a0-1ac4-425e-9759-3f05d11fbb01&quot;
+        }
+        }</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+        &quot;associatedIndex&quot;: 3
+        }</component>
+  <component name="ProjectId" id="2g6ltEdIkbgqCLeedQPBrWoWsI1" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.NfrApiGatewayApplication.executor": "Run",
+    "Spring Boot.NfrDiscoveryServerApplication.executor": "Run",
+    "Spring Boot.nfrAdminServiceApplication.executor": "Run",
+    "git-widget-placeholder": "features/admin__user__management__update/nour",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Nour/Desktop/myNFRproject/MicroNFR",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.configurations.included.in.services": "true",
+    "ts.external.directory.path": "C:\\Users\\TRETEC\\Desktop\\nfr_system\\nfr-notification-service\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="dz.esisba.adminservice.enums" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.nfrAdminServiceApplication">
+    <configuration name="NfrApiGatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="nfr-api-gateway" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.noux.nfrapigateway.NfrApiGatewayApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="NfrDiscoveryServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="nfr-discovery-server" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="dz.esisba.nfrdiscoveryserver.NfrDiscoveryServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="nfrAdminServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="nfr-admin-serive" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="dz.esisba.adminservice.nfrAdminServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Spring Boot.NfrApiGatewayApplication" />
+      <item itemvalue="Spring Boot.nfrAdminServiceApplication" />
+      <item itemvalue="Spring Boot.NfrDiscoveryServerApplication" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9ab8526c-c2b9-43d6-8c05-e6fd5dafc1e5" name="Changes" comment="" />
+      <created>1715026121466</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1715026121466</updated>
+      <workItem from="1715026122813" duration="26074000" />
+      <workItem from="1715124152917" duration="127000" />
+      <workItem from="1715148608209" duration="11573000" />
+      <workItem from="1715200227286" duration="42000" />
+      <workItem from="1715203476400" duration="3000000" />
+      <workItem from="1715217078028" duration="7013000" />
+      <workItem from="1715249396165" duration="6215000" />
+      <workItem from="1715282930119" duration="7321000" />
+      <workItem from="1715423623577" duration="1202000" />
+      <workItem from="1715799517769" duration="801000" />
+      <workItem from="1715461818676" duration="2267000" />
+      <workItem from="1715576160018" duration="8061000" />
+      <workItem from="1715649477464" duration="1528000" />
+      <workItem from="1715663047150" duration="14112000" />
+      <workItem from="1715725531672" duration="3816000" />
+      <workItem from="1715734327161" duration="277000" />
+      <workItem from="1715734631665" duration="587000" />
+      <workItem from="1715735256561" duration="629000" />
+      <workItem from="1715735922063" duration="26897000" />
+      <workItem from="1715846810311" duration="7097000" />
+      <workItem from="1715889160142" duration="2220000" />
+      <workItem from="1715898354484" duration="5846000" />
+      <workItem from="1715932961664" duration="7653000" />
+      <workItem from="1715975417486" duration="92000" />
+      <workItem from="1716000033125" duration="14361000" />
+      <workItem from="1716092044459" duration="35000" />
+      <workItem from="1716170620402" duration="2130000" />
+      <workItem from="1716195647489" duration="7612000" />
+      <workItem from="1716233206797" duration="122000" />
+      <workItem from="1716242333960" duration="725000" />
+      <workItem from="1716264143277" duration="13460000" />
+      <workItem from="1715932961664" duration="7018000" />
+      <workItem from="1715984314916" duration="161000" />
+      <workItem from="1716010793967" duration="3300000" />
+      <workItem from="1716029751067" duration="1956000" />
+      <workItem from="1716038247504" duration="2217000" />
+      <workItem from="1716065650319" duration="1740000" />
+      <workItem from="1716069344488" duration="35000" />
+      <workItem from="1716073842236" duration="8224000" />
+      <workItem from="1716112258561" duration="2229000" />
+      <workItem from="1716115732828" duration="538000" />
+      <workItem from="1716126819011" duration="6049000" />
+      <workItem from="1717132356175" duration="17617000" />
+      <workItem from="1717465439914" duration="1973000" />
+      <workItem from="1717475521385" duration="18906000" />
+      <workItem from="1717531230998" duration="13085000" />
+      <workItem from="1717405938736" duration="697000" />
+      <workItem from="1716726948907" duration="11486000" />
+      <workItem from="1716942582230" duration="31133000" />
+      <workItem from="1717361687028" duration="20303000" />
+      <workItem from="1717488483424" duration="1103000" />
+      <workItem from="1717623570703" duration="20257000" />
+      <workItem from="1717666360574" duration="3261000" />
+      <workItem from="1717737342811" duration="9149000" />
+      <workItem from="1717797992574" duration="1922000" />
+      <workItem from="1717815975005" duration="251000" />
+      <workItem from="1717816256541" duration="22961000" />
+      <workItem from="1717964848757" duration="5192000" />
+      <workItem from="1717773435731" duration="7023000" />
+      <workItem from="1717790021606" duration="8261000" />
+      <workItem from="1717876233614" duration="1678000" />
+      <workItem from="1719026759298" duration="314000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

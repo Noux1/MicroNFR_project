@@ -1,0 +1,128 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: 'kafka'
+    ports:
+      - '9092:9092'
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+
+
+  mongo-audit:
+    image: mongo
+    restart: always
+    ports:
+      - 27018:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8034:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo-audit:27018/
+  # audit-service:
+  #   build:
+  #     context: ./nfr-auditlog-service
+  #     dockerfile: Dockerfile
+  #   container_name: audit-service
+  #   ports:
+  #     - "3040:3040"
+  #   environment:
+  #     - MONGODB_URI=mongodb://root:example@host.docker.internal:27017
+  #   volumes:
+  #     - ./nfr-auditlog-service:/usr/src/app
+  #   depends_on:
+  #     - mongo-audit
+  #     - mongo-express
+  #   networks:
+  #     - app-network
+
+  postgres_notif:
+    image: postgres:16.2
+    container_name: postgres_notif
+    ports:
+      - '5435:5432'
+    environment:
+      - POSTGRES_USER=marwa
+      - POSTGRES_PASSWORD=marwa
+      - POSTGRES_DB=notif_database
+    networks:
+      - app-network
+
+  # notification-service:
+  #   build:
+  #     context: ./nfr-notification-service
+  #     dockerfile: Dockerfile
+  #   container_name: notification-service
+  #   ports:
+  #     - "3030:3030"
+  #   environment:
+  #     NODE_ENV: development
+  #     DATABASE_HOST: postgres_notif
+  #     DATABASE_PORT: 5435
+  #   volumes:
+  #     - ./nfr-notification-service:/usr/src/app
+  #   depends_on:
+  #    - postgres_notif
+  #   networks:
+  #    - app-network
+
+
+
+
+
+  postgres_admin:
+    image: postgres:16.2
+    container_name: postgres__admin
+    ports:
+      - '5434:5432'
+    environment:
+      - POSTGRES_USER=nour
+      - POSTGRES_PASSWORD=nour
+      - POSTGRES_DB=admin-service-db
+
+    volumes:
+
+      - postgres-data-admin:/var/lib/postgresql/data
+
+
+      
+
+  # postgres_admin:
+  #   image: postgres:16.2
+  #   container_name: postgres_admin
+  #   ports:
+  #     - '5433:5432' # Changed port to 5433 to avoid conflict
+  #   environment:
+  #     - POSTGRES_USER=admin
+  #     - POSTGRES_PASSWORD=admin 
+  #     - POSTGRES_DB=admin_database
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data-admin:
+networks:
+  app-network:
+    driver: bridge

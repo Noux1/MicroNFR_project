@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "app.realm",
+      "type": "java.lang.String",
+      "description": "Description for app.realm."
+    },
+    {
+      "name": "app.auth-server-url",
+      "type": "java.lang.String",
+      "description": "Description for app.auth-server-url."
+    },
+    {
+      "name": "app.admin-client-id",
+      "type": "java.lang.String",
+      "description": "Description for app.admin-client-id."
+    },
+    {
+      "name": "app.admin-client-secret",
+      "type": "java.lang.String",
+      "description": "Description for app.admin-client-secret."
+    }
+  ] }
