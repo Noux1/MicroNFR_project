@@ -1,18 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useUserStore } from '../../store/AdminStore/UserStore'
 import { usePopupStore, useSnackbarStore } from '../../store/CommonStore/StyleStore'
-import { Box, Chip, Stack, Typography } from '@mui/material'
-import ButtonForm from '../../components/Common/Reusable-components/ButtonForm'
-import Popup from '../../components/Common/Reusable-components/Popup'
-import { DataGrid, GridCellParams } from '@mui/x-data-grid'
-import ButtonMore from '../../components/Common/Reusable-components/ButtonMore'
 import { useKeycloakStore } from '../../store/AuthStore/KeycloakStore'
 import { useNavigate } from 'react-router-dom';
-import SnackBar from '../../components/Common/Reusable-components/SnackBar'
 import { useGroupStore } from '../../store/AdminStore/GroupStore'
-import axiosInstance from '../../utils/AxiosInstance'
 import Unauthorized from '../Errors/Unauthorized'
-
+import DataTable from '../../components/Common/Reusable-components/AdminComponent/DataTable'
+import { Box, CircularProgress } from '@mui/material';
 
 const Users = () => {
     const columns = useMemo(() => [
@@ -21,121 +15,51 @@ const Users = () => {
         { field: 'lastName', headerName: 'Last Name', width: 100 },
         { field: 'email', headerName: 'Email', width: 200 },
         { field: 'phoneNumber', headerName: 'Phone Number', width: 150 },
+    ], []);
 
-    ], [])
-
-    const { users, addUser, deleteUser, getUsers } = useUserStore()
-    const { groups, getGroups } = useGroupStore()
-    const { authorities: userAuthorities } = useKeycloakStore()
+    const { users, addUser, deleteUser, getUsers } = useUserStore();
+    const { groups, getGroups } = useGroupStore();
+    const { authorities: userAuthorities } = useKeycloakStore();
+    const { isOpen, openPopup, closePopup } = usePopupStore();
+    const { isOpenSnackbar, openSnackbar, closeSnackbar } = useSnackbarStore();
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'warning' | 'info'>('success');
+    const [snackbarMsg, setSnackbarMsg] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        getUsers()
-        getGroups()
-    }, [getUsers, getGroups])
+        const fetchData = async () => {
+            setLoading(true);
+            await getUsers();
+            await getGroups();
+            setLoading(false);
+        };
+
+        fetchData();
+    }, [getUsers, getGroups]);
 
     const fields = [
-        {
-            name: 'User Name',
-            label: 'User Name',
-            type: 'text',
-            required: true
-        },
-        {
-            name: 'First Name',
-            label: 'First Name',
-            type: 'text',
-            required: true
-        },
-        {
-            name: 'Last Name',
-            label: 'Last Name',
-            type: 'text',
-            required: true
-        },
-        {
-            name: 'Email',
-            label: 'Email',
-            type: 'text',
-            required: true
-        },
-        {
-            name: 'Phone Number',
-            label: 'Phone Number',
-            type: 'text',
-            required: true
-        },
-        {
-            name: 'Group',
-            label: 'Group',
-            type: 'list',
-            options: groups.map(group => group.libelle)
-        },
-        {
-            name: 'Password',
-            label: 'Password',
-            type: 'text',
-            // options: ['Activated', 'Desactivated']
-        },
-        {
-            name: 'Status',
-            label: 'Status',
-            type: 'switch',
-            options: ['Activated', 'Desactivated']
-        },
-
-        {
-            name: 'Temporary',
-            label: 'Temporary',
-            type: 'switch',
-            options: ['Activated', 'Desactivated']
-        },
-        {
-            name: 'Email Verified',
-            label: 'Email Verified',
-            type: 'switch',
-            options: ['Activated', 'Desactivated']
-        }
+        { name: 'User Name', label: 'User Name', type: 'text', required: true },
+        { name: 'First Name', label: 'First Name', type: 'text', required: true },
+        { name: 'Last Name', label: 'Last Name', type: 'text', required: true },
+        { name: 'Email', label: 'Email', type: 'text', required: true },
+        { name: 'Phone Number', label: 'Phone Number', type: 'text', required: true },
+        { name: 'Group', label: 'Group', type: 'list', options: groups.map(group => group.libelle) },
+        { name: 'Password', label: 'Password', type: 'text' },
+        { name: 'Status', label: 'Status', type: 'switch', options: ['Activated', 'Deactivated'] },
+        { name: 'Temporary', label: 'Temporary', type: 'switch', options: ['Activated', 'Deactivated'] },
+        { name: 'Email Verified', label: 'Email Verified', type: 'switch', options: ['Activated', 'Deactivated'] }
     ];
-    const { isOpen, openPopup, closePopup } = usePopupStore();
-    const [updateFormData, setUpdateFormData] = useState<Record<string, any>>({});
-    const { isOpenSnackbar, openSnackbar, closeSnackbar } = useSnackbarStore()
-    const [snackbarMsg, setSnackbarMsg] = useState<string>('')
 
     const handleOpenAddPopup = () => {
-        setUpdateFormData({}); // Clear any previous initial data
         openPopup();
     };
 
-    const handleAddUser = async (formData: Record<string, any>) => {
-        if (!formData['Group']) {
-            console.error('Group is not selected');
-            return; // Sortir de la fonction si aucun module n'est sélectionné
-        }
-
-        // Récupérer le module sélectionné
-        const groupSelected = formData['Group'];
-        const selectedGroup = groups.find(group => group.libelle === groupSelected);
-        console.log(selectedGroup)
-        console.log(selectedGroup)
-        // Vérifier si un module correspondant a été trouvé
+    const handleSubmitUser = async (formData: Record<string, any>) => {
+        const selectedGroup = groups.find(group => group.libelle === formData['Group']);
         if (!selectedGroup) {
             console.error('Selected group not found');
-            return; // Sortir de la fonction si aucun module correspondant n'est trouvé
-        }
-
-        // Récupérer l'ID du module sélectionné
-        const groupId = selectedGroup.id;
-
-        // Si c'est une mise à jour de rôle, récupérer l'ID du module du backend
-        let groupIdRec: number | null = null;
-
-        try {
-            const responseGroup = await axiosInstance.get(`/group/${groupId}`);
-            groupIdRec = responseGroup.data.id;
-        } catch (error) {
-            console.error('Error retrieving group ID from backend:', error);
-            return; // Sortir de la fonction en cas d'erreur
+            return;
         }
 
         const userData = {
@@ -146,7 +70,7 @@ const Users = () => {
             email: formData['Email'],
             phoneNumber: formData['Phone Number'],
             actif: formData['Status'] === 'Activated',
-            groupId: groupIdRec !== null ? groupIdRec : groupId,
+            groupId: selectedGroup.id,
             password: formData['Password'],
             temporary: formData['Temporary'] === 'Activated',
             emailVerified: formData['Email Verified'] === 'Activated',
@@ -155,121 +79,68 @@ const Users = () => {
 
         try {
             await addUser(userData);
-            // eslint-disable-next-line
+            setSnackbarSeverity('success');
+            setSnackbarMsg('User added successfully');
             openSnackbar();
-            setSnackbarSeverity('success')
-            setSnackbarMsg(`User added successfully`);
-            console.log('User added successfully');
-            closePopup(); // Close the popup only if user is added successfully
-            setUpdateFormData({});
+            closePopup();
         } catch (error) {
             console.error('Error adding user:', error);
-            // eslint-disable-next-line
+            setSnackbarSeverity('error');
+            setSnackbarMsg('Failed to add user');
             openSnackbar();
-            setSnackbarSeverity('error')
-            setSnackbarMsg(`Failed to add user`);
         }
     };
 
-    const handleDeleteUser = (id: number) => {
-        deleteUser(id)
-        // eslint-disable-next-line
-        openSnackbar();
-        setSnackbarSeverity('success')
-        setSnackbarMsg(`User added successfully`);
-    }
-
-    const navigate = useNavigate();
+    const handleDeleteUser = async (id: number) => {
+        try {
+            await deleteUser(id);
+            setSnackbarSeverity('success');
+            setSnackbarMsg('User deleted successfully');
+            openSnackbar();
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            setSnackbarSeverity('error');
+            setSnackbarMsg('Failed to delete user');
+            openSnackbar();
+        }
+    };
 
     const handleViewDetails = (id: number) => {
         navigate(`/admin/users/${id}`);
     };
 
+    if (loading) {
+        <Box sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <CircularProgress />
+        </Box>
+    }
+    else if (!userAuthorities.some(auth => auth.data === 'USER_GET_ALL' && auth.isGranted)) {
+        return <Unauthorized />;
+    }
+
     return (
-        <>
-            {userAuthorities.some(auth => auth.data === 'USER_GET_ALL' && auth.isGranted) ? (
-                <>
-                    <Box
-                        sx={{
-                            height: 350, marginX: 6
-                        }}>
-                        <Stack direction='row' margin={2} justifyContent='space-between'>
-                            <Typography variant='h5' sx={
-                                {
-                                    fontFamily: 'Nunito, sans serif'
-                                }
-                            }>
-                                Users
-                            </Typography>
-                            {userAuthorities.some(auth => auth.data === 'USER_CREATE' && auth.isGranted) && (
-                                <ButtonForm
-                                    text='Add User'
-                                    fields={fields}
-                                    onSubmit={handleOpenAddPopup} />
-                            )}
-                            <Popup
-                                open={isOpen}
-                                onClose={closePopup}
-                                fields={fields}
-                                onSubmit={handleAddUser}
-                                initialData={{}}
-                            />
-                            {/* <IconButton size='small' onClick={refreshEvents}><Refresh /></IconButton> */}
-                        </Stack >
-
-                        <DataGrid
-                            columns={[
-                                ...columns,
-
-                                {
-                                    field: 'actif',
-                                    headerName: 'Status',
-                                    width: 100,
-                                    renderCell: (params: GridCellParams) => (
-                                        <Box>
-                                            {params.value ? (
-                                                <Chip color='success' variant='outlined' label='Activated' />
-                                            ) : (
-                                                <Chip color='error' variant='outlined' label='Deactivated' />
-                                            )}
-                                        </Box>
-                                    )
-                                },
-                                {
-                                    field: 'actions',
-                                    headerName: 'Actions',
-                                    width: 100,
-                                    renderCell: (params: GridCellParams) => (
-                                        <Box>
-                                            <ButtonMore
-                                                id={params.row.id}
-                                                handleUpdate={handleViewDetails}
-                                                handleDelete={userAuthorities.some(auth => auth.data === 'USER_DELETE' && auth.isGranted) && handleDeleteUser} />
-
-                                        </Box>
-
-                                    )
-                                }
-                            ]}
-                            rows={users.map((user) => ({ ...user, id: user.id }))} // Add unique IDs to each row
-                            getRowId={(row) => row.id}
-                            sx={{
-                                fontFamily: 'Nunito, sans serif'
-                            }}
-                        />
-                    </Box>
-                    <SnackBar
-                        open={isOpenSnackbar}
-                        severity={snackbarSeverity}
-                        onClose={closeSnackbar}
-                        text={snackbarMsg}
-                    />
-                </>
-            ) : (
-                <Unauthorized />
-            )
-            }
-        </>
+        <DataTable
+            title='Users'
+            createAuthority='USER_CREATE'
+            userAuthorities={userAuthorities}
+            titleAddButton='Add User'
+            fields={fields}
+            handleOpenAddPopup={handleOpenAddPopup}
+            isOpenPopup={isOpen}
+            closePopup={closePopup}
+            handleSubmitOption={handleSubmitUser}
+            initialData={{}}
+            updateAuthority='USER_UPDATE'
+            deleteAuthority='USER_DELETE'
+            handleViewDetails={handleViewDetails}
+            handleDelete={handleDeleteUser}
+            rows={users}
+            columns={[...columns]}
+            isOpenSnackbar={isOpenSnackbar}
+            severity={snackbarSeverity}
+            closeSnackbar={closeSnackbar}
+            snackbarText={snackbarMsg}
+        />
     )
 }
 

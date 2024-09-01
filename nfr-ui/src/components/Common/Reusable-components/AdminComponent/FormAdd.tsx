@@ -1,5 +1,5 @@
-import { Box, Button, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, Switch, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, Switch, TextField } from '@mui/material'
+import React from 'react'
 
 export interface FormField {
     name: string;
@@ -12,34 +12,12 @@ export interface FormField {
 
 interface FormAddProps {
     fields: FormField[];
-    onSubmit: (formData: Record<string, any>) => void;
-    initialData?: Record<string, any>
+    formData: Record<string, any>;
+    handleChange: (event: React.ChangeEvent<HTMLInputElement | { name?: string, value: unknown }> | React.ChangeEvent<{ name?: string, value: unknown }> | SelectChangeEvent<any>) => void;
+    handleSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FormAdd: React.FC<FormAddProps> = ({ fields, onSubmit, initialData }) => {
-    const [formData, setFormData] = useState<Record<string, any>>(initialData || {});
-
-    useEffect(() => {
-        setFormData(initialData || {})
-    }, [initialData])
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement | { name?: string, value: unknown }> | React.ChangeEvent<{ name?: string, value: unknown }> | SelectChangeEvent<any>) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name as string]: value });
-    };
-
-    const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, checked } = event.target;
-        const status = checked ? 'Activated' : 'Deactivated'; // Map switch value to 'Activated' or 'Deactivated'
-        setFormData({ ...formData, [name]: status });
-        console.log({ ...formData, [name]: status })
-    };
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        onSubmit(formData);
-        setFormData({});
-    };
+const FormAdd: React.FC<FormAddProps> = ({ fields, formData, handleChange, handleSwitchChange }) => {
 
     const renderFields = () =>
         fields.map((field) => {
@@ -72,7 +50,6 @@ const FormAdd: React.FC<FormAddProps> = ({ fields, onSubmit, initialData }) => {
                                     <Switch checked={formData[field.name] === 'Activated' || false}
                                         onChange={handleSwitchChange}
                                         name={field.name} size='small' />}
-
                             />
                         </FormControl>
                     );
@@ -103,11 +80,9 @@ const FormAdd: React.FC<FormAddProps> = ({ fields, onSubmit, initialData }) => {
         });
 
     return (
-        <Box component="form" onSubmit={handleSubmit} >
+        <Box>
             {renderFields()}
-            <Button type='submit' variant='contained' color='primary' sx={{ marginY: 2 }} size='small'>Add</Button>
         </Box>
     );
 };
-
 export default FormAdd;

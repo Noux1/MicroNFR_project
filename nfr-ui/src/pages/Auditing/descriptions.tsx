@@ -1,95 +1,97 @@
 import { Box, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import ModuleValues from '../../components/Common/Reusable-components/AuditComponent/ModuleValues';
+import RoleValues from '../../components/Common/Reusable-components/AuditComponent/RoleValues';
+import PropertyValues from '../../components/Common/Reusable-components/AuditComponent/PropertyValues';
+import GroupValues from '../../components/Common/Reusable-components/AuditComponent/GroupValues';
+import UserAuthoritiesValues from '../../components/Common/Reusable-components/AuditComponent/UserAuthoritiesValues';
+import AuthorityValues from '../../components/Common/Reusable-components/AuditComponent/AuthorityValues';
+import UserValues from '../../components/Common/Reusable-components/AuditComponent/UserValues';
 
 const Descriptions = ({ data }) => {
-    const [module, setModule] = useState(false)
-    const [role, setRole] = useState(false)
-    const [actif, setActif] = useState(false)
-    const [username, setUsername] = useState(false)
-    const [email, setEmail] = useState(false)
-    const [firstName, setFirstName] = useState(false)
-    const [lastName, setLastName] = useState(false)
-    const [phoneNumber, setPhoneNumber] = useState(false)
-    const [group, setGroup] = useState(false)
-    const [userAuthorities, setUserAuthorities] = useState(false)
-    const [uuid, setUuid] = useState(false)
-    const [user, setUser] = useState(false)
-    const [authority, setAuthority] = useState(false)
-    const [granted, setGranted] = useState(false)
+    const [description, setDescription] = useState({
+        module: false,
+        role: false,
+        actif: false,
+        username: false,
+        email: false,
+        firstName: false,
+        lastName: false,
+        phoneNumber: false,
+        group: false,
+        userAuthorities: false,
+        uuid: false,
+        authority: false,
+        granted: false,
+        user: false,
+        moduleData: null,
+        roleData: null,
+        actifData: null,
+        usernameData: null,
+        emailData: null,
+        firstNameData: null,
+        lastNameData: null,
+        phoneNumberData: null,
+        groupData: null,
+        userAuthoritiesData: null,
+        uuidData: null,
+        authorityData: null,
+        grantedData: null,
+        userData: null
+    });
 
-    const [moduleData, setModuleData] = useState(null)
-    const [roleData, setRoleData] = useState(null)
-    const [actifData, setActifData] = useState(null)
-    const [usernameData, setUsernameData] = useState(null)
-    const [emailData, setEmailData] = useState(null)
-    const [firstNameData, setFirstNameData] = useState(null)
-    const [lastNameData, setLastNameData] = useState(null)
-    const [phoneNumberData, setPhoneNumberData] = useState(null)
-    const [groupData, setGroupData] = useState(null)
-    const [userAuthoritiesData, setUserAuthoritiesData] = useState(null)
-    const [uuidData, setUuidData] = useState(null)
-    const [authorityData, setAuthorityData] = useState(null)
-    const [grantedData, setGrantedData] = useState(null)
-    const [userData, setUserData] = useState(null)
+    const updateState = (property, value, data) => {
+        setDescription(prevState => ({
+            ...prevState,
+            [`${property}`]: value,
+            [`${property}Data`]: data
+        }));
+    };
 
     useEffect(() => {
         data.forEach((item) => {
             switch (item.property) {
                 case "Modules":
-                    setModule(true);
-                    setModuleData(item);
+                    updateState("module", true, item);
                     break;
                 case "Roles":
-                    setRole(true);
-                    setRoleData(item);
+                    updateState("role", true, item);
                     break;
                 case "actif":
-                    setActif(true);
-                    setActifData(item);
+                    updateState("actif", true, item);
                     break;
                 case "userName":
-                    setUsername(true);
-                    setUsernameData(item);
+                    updateState("username", true, item);
                     break;
                 case "email":
-                    setEmail(true);
-                    setEmailData(item);
+                    updateState("email", true, item);
                     break;
                 case "firstName":
-                    setFirstName(true);
-                    setFirstNameData(item);
+                    updateState("firstName", true, item);
                     break;
                 case "lastName":
-                    setLastName(true);
-                    setLastNameData(item);
+                    updateState("lastName", true, item);
                     break;
                 case "phoneNumber":
-                    setPhoneNumber(true);
-                    setPhoneNumberData(item);
+                    updateState("phoneNumber", true, item);
                     break;
                 case "group":
-                    setGroup(true);
-                    setGroupData(item);
+                    updateState("group", true, item);
                     break;
                 case "userAuthorities":
-                    setUserAuthorities(true);
-                    setUserAuthoritiesData(item);
+                    updateState("userAuthorities", true, item);
                     break;
                 case "uuid":
-                    setUuid(true);
-                    setUuidData(item);
+                    updateState("uuid", true, item);
                     break;
                 case "authority":
-                    setAuthority(true);
-                    setAuthorityData(item);
+                    updateState("authority", true, item);
                     break;
                 case "granted":
-                    setGranted(true);
-                    setGrantedData(item);
+                    updateState("granted", true, item);
                     break;
                 case "user":
-                    setUser(true);
-                    setUserData(item);
+                    updateState("user", true, item);
                     break;
                 default:
                     break;
@@ -97,508 +99,137 @@ const Descriptions = ({ data }) => {
         });
     }, [data]);
 
+
     return (
         <div>
-            {module && moduleData && (
+            {description.module && (description.moduleData.oldValue.length !== 0 || description.moduleData.newValue.length !== 0) && (
                 <Box>
                     <Typography variant="h6">Modules:</Typography>
-                    {moduleData.oldValue && moduleData.oldValue.map((mod, index) => (
-                        <div key={index}>
-                            <Typography variant='body1' paddingLeft={1}>Old Value:</Typography>
-                            <Box sx={{ paddingLeft: 3 }}>
-                                <Typography >Module Name: {mod.moduleName}</Typography>
-                                <Typography>Module Code: {mod.moduleCode}</Typography>
-                                <Typography>URI: {mod.uri}</Typography>
-                                <Typography>Icon: {mod.icon}</Typography>
-                                <Typography>Color: {mod.color}</Typography>
-                                <Typography>Active: {mod.actif ? "Yes" : "No"}</Typography>
-                                <Typography>Module ID: {mod.idModule}</Typography>
-                            </Box>
-                        </div>
-                    ))}
-                    {moduleData.newValue && moduleData.newValue.map((mod, index) => (
-                        <div key={index}>
-                            <Typography variant='body1' paddingLeft={1}>New Value:</Typography>
-                            <Box sx={{ paddingLeft: 3 }}>
-                                <Typography >Module Name: {mod.moduleName}</Typography>
-                                <Typography>Module Code: {mod.moduleCode}</Typography>
-                                <Typography>URI: {mod.uri}</Typography>
-                                <Typography>Icon: {mod.icon}</Typography>
-                                <Typography>Color: {mod.color}</Typography>
-                                <Typography>Active: {mod.actif ? "Yes" : "No"}</Typography>
-                                <Typography>Module ID: {mod.idModule}</Typography>
-                            </Box>
-                        </div>
-                    ))}
+                    {description.moduleData.oldValue && (
+                        <ModuleValues
+                            title="Old Value:"
+                            values={description.moduleData.oldValue}
+                        />
+                    )}
+                    {description.moduleData.newValue && (
+                        <ModuleValues
+                            title="New Value:"
+                            values={description.moduleData.newValue}
+                        />
+                    )}
                 </Box>
             )
             }
             {
-                role && roleData && (
+                description.role && (description.roleData.oldValue.length !== 0 || description.roleData.newValue.length !== 0) && (
                     <Box>
                         <Typography variant="h6">Roles:</Typography>
-                        {roleData.oldValue && roleData.oldValue.map((roleItem, index) => (
-                            <div key={index}>
-                                <Typography variant='body1' paddingLeft={1}>Old Value:</Typography>
-                                <Box sx={{ paddingLeft: 3 }}>
-                                    <Typography>Role ID: {roleItem.idRole}</Typography>
-                                    <Typography>Libelle: {roleItem.libelle}</Typography>
-                                    <Typography>Active: {roleItem.actif ? "Yes" : "No"}</Typography>
-                                    <Typography>Module:</Typography>
-                                    <Box sx={{ paddingLeft: 2 }}>
-                                        <Typography>Module ID: {roleItem.module.idModule}</Typography>
-                                        <Typography>URI: {roleItem.module.uri}</Typography>
-                                        <Typography>Icon: {roleItem.module.icon}</Typography>
-                                        <Typography>Color: {roleItem.module.color}</Typography>
-                                        <Typography>Module Name: {roleItem.module.moduleName}</Typography>
-                                        <Typography>Module Code: {roleItem.module.moduleCode}</Typography>
-                                        <Typography>Authority Set:</Typography>
-                                    </Box>
-                                </Box>
+                        {description.roleData.oldValue && (
+                            <RoleValues
+                                title="Old Value: "
+                                roles={description.roleData.oldValue}
+                            />
+                        )}
+                        {description.roleData.newValue && (
+                            <RoleValues
+                                title="New Value: "
+                                roles={description.roleData.newValue}
+                            />
+                        )}
+                    </Box>
 
-                                {roleItem.authoritySet.map((auth, authIndex) => (
-                                    <div key={authIndex}>
-                                        <Box sx={{ paddingLeft: 7 }}>
-                                            <Typography>Authority ID: {auth.idAuthority}</Typography>
-                                            <Typography>Libelle: {auth.libelle}</Typography>
-                                            <Typography>Active: {auth.actif ? "Yes" : "No"}</Typography>
-                                            <Typography>Authority Type: {auth.authorityType.libelle}</Typography>
-                                            <Typography>Module:</Typography>
-                                            <Box sx={{ paddingLeft: 3 }}>
-                                                <Typography>Module ID: {auth.module.idModule}</Typography>
-                                                <Typography>URI: {auth.module.uri}</Typography>
-                                                <Typography>Icon: {auth.module.icon}</Typography>
-                                                <Typography>Color: {auth.module.color}</Typography>
-                                                <Typography>Module Name: {auth.module.moduleName}</Typography>
-                                                <Typography>Module Code: {auth.module.moduleCode}</Typography>
-                                            </Box>
-                                        </Box>
-                                    </div>
-                                ))}
-                            </div>
-                        ))}
-                        {roleData.newValue && roleData.newValue.map((roleItem, index) => (
-                            <div key={index}>
-                                <Typography variant='body1' paddingLeft={1}>New Value:</Typography>
-                                <Box sx={{ paddingLeft: 3 }}>
-                                    <Typography>Role ID: {roleItem.idRole}</Typography>
-                                    <Typography>Libelle: {roleItem.libelle}</Typography>
-                                    <Typography>Active: {roleItem.actif ? "Yes" : "No"}</Typography>
-                                    <Typography>Module:</Typography>
-                                    <Box sx={{ paddingLeft: 2 }}>
-                                        <Typography>Module ID: {roleItem.module.idModule}</Typography>
-                                        <Typography>URI: {roleItem.module.uri}</Typography>
-                                        <Typography>Icon: {roleItem.module.icon}</Typography>
-                                        <Typography>Color: {roleItem.module.color}</Typography>
-                                        <Typography>Module Name: {roleItem.module.moduleName}</Typography>
-                                        <Typography>Module Code: {roleItem.module.moduleCode}</Typography>
-                                        <Typography>Authority Set:</Typography>
-                                    </Box>
-                                </Box>
-
-                                {roleItem.authoritySet.map((auth, authIndex) => (
-                                    <div key={authIndex}>
-                                        <Box sx={{ paddingLeft: 7 }}>
-                                            <Typography>Authority ID: {auth.idAuthority}</Typography>
-                                            <Typography>Libelle: {auth.libelle}</Typography>
-                                            <Typography>Active: {auth.actif ? "Yes" : "No"}</Typography>
-                                            <Typography>Authority Type: {auth.authorityType.libelle}</Typography>
-                                            <Typography>Module:</Typography>
-                                            <Box sx={{ paddingLeft: 3 }}>
-                                                <Typography>Module ID: {auth.module.idModule}</Typography>
-                                                <Typography>URI: {auth.module.uri}</Typography>
-                                                <Typography>Icon: {auth.module.icon}</Typography>
-                                                <Typography>Color: {auth.module.color}</Typography>
-                                                <Typography>Module Name: {auth.module.moduleName}</Typography>
-                                                <Typography>Module Code: {auth.module.moduleCode}</Typography>
-                                            </Box>
-                                        </Box>
-                                    </div>
-                                ))
-                                }
-                            </div>
-                        ))}
-                    </Box>
+                )}
+            {
+                description.actif && description.actifData && (
+                    <PropertyValues title="Actif" oldValue={description.actifData.oldValue} newValue={description.actifData.newValue} />
                 )
             }
             {
-                actif && actifData && (
-                    <Box>
-                        <Typography variant="h6">Actif:</Typography>
-                        {actifData.oldValue && (
-                            <Typography variant='body1' paddingLeft={1}>Old Value: {actifData.oldValue ? "Yes" : "No"}</Typography>
-                        )}
-                        {actifData.newValue && (
-                            <Typography variant='body1' sx={{ fontWeight: 600 }} paddingLeft={1}>New Value: {actifData.newValue ? "Yes" : "No"}</Typography>
-                        )}
-                    </Box>
+                description.username && (description.usernameData) && (
+                    <PropertyValues title="User Name" oldValue={description.usernameData.oldValue} newValue={description.usernameData.newValue} />
                 )
             }
             {
-                username && usernameData && (
-                    <Box>
-                        <Typography variant="h6">Username:</Typography>
-                        {usernameData.oldValue && (
-                            <Typography variant='body1' paddingLeft={1}>Old Value: {usernameData.oldValue}</Typography>
-                        )}
-                        {usernameData.newValue && (
-                            <Typography variant='body1' paddingLeft={1}>New Value: {usernameData.newValue}</Typography>
-                        )}
-                    </Box>
+                description.email && description.emailData && (
+                    <PropertyValues title="Email" oldValue={description.emailData.oldValue} newValue={description.emailData.newValue} />
                 )
             }
             {
-                email && emailData && (
-                    <Box>
-                        <Typography variant="h6">Email:</Typography>
-                        {emailData.oldValue && (
-                            <Typography variant='body1' paddingLeft={1}>Old Value: {emailData.oldValue}</Typography>
-                        )}
-                        {emailData.newValue && (
-                            <Typography variant='body1' paddingLeft={1}>New Value: {emailData.newValue}</Typography>
-                        )}
-                    </Box>
+                description.firstName && description.firstNameData && (
+                    <PropertyValues title="First Name" oldValue={description.firstNameData.oldValue} newValue={description.firstNameData.newValue} />
                 )
             }
             {
-                firstName && firstNameData && (
-                    <Box>
-                        <Typography variant="h6">First Name:</Typography>
-                        {firstNameData.oldValue && (
-                            <Typography variant='body1' paddingLeft={1}>Old Value: {firstNameData.oldValue}</Typography>
-                        )}
-                        {firstNameData.newValue && (
-                            <Typography variant='body1' paddingLeft={1}>New Value: {firstNameData.newValue}</Typography>
-                        )}
-                    </Box>
+                description.lastName && description.lastNameData && (
+                    <PropertyValues title="Last Name" oldValue={description.lastNameData.oldValue} newValue={description.lastNameData.newValue} />
                 )
             }
             {
-                lastName && lastNameData && (
-                    <Box>
-                        <Typography variant="h6">Last Name:</Typography>
-                        {lastNameData.oldValue && (
-                            <Typography variant='body1' paddingLeft={1}>Old Value: {lastNameData.oldValue}</Typography>
-                        )}
-                        {lastNameData.newValue && (
-                            <Typography variant='body1' paddingLeft={1} >New Value: {lastNameData.newValue}</Typography>
-                        )}
-                    </Box>
+                description.phoneNumber && description.phoneNumberData && (
+                    <PropertyValues title="Phone Number" oldValue={description.phoneNumberData.oldValue} newValue={description.phoneNumberData.newValue} />
                 )
             }
             {
-                phoneNumber && phoneNumberData && (
-                    <Box>
-                        <Typography variant="h6">Phone Number:</Typography>
-                        {phoneNumberData.oldalue && (
-                            <Typography variant='body1' paddingLeft={1}>Old Value: {phoneNumberData.oldValue}</Typography>
-                        )}
-                        {phoneNumberData.newValue && (
-                            <Typography variant='body1' paddingLeft={1}>New Value: {phoneNumberData.newValue}</Typography>
-                        )}
-                    </Box>
-                )
-            }
-            {
-                group && groupData && (
+                description.group && description.groupData && (
                     <Box>
                         <Typography variant="h6">Group:</Typography>
-                        {groupData.oldValue && (
-                            <>
-                                <Typography variant='body1' paddingLeft={1}>Old Value:</Typography>
-                                <Box sx={{ paddingLeft: 3 }}>
-                                    <Typography> Group ID: {groupData.oldValue.idGroup}</Typography>
-                                    <Typography>Libelle: {groupData.oldValue.libelle}</Typography>
-                                    <Typography>Active: {groupData.oldValue.actif ? "Yes" : "No"}</Typography>
-                                </Box>
-                            </>
+                        {description.groupData.oldValue && (
+                            <GroupValues title="Old Value: " values={description.groupData.oldValue} />
                         )}
-                        {groupData.newValue && (<>
-                            <Typography variant='body1' paddingLeft={1}>New Value:</Typography>
-                            <Box sx={{ paddingLeft: 3 }}>
-                                <Typography> Group ID: {groupData.oldValue.idGroup}</Typography>
-                                <Typography>Libelle: {groupData.oldValue.libelle}</Typography>
-                                <Typography>Active: {groupData.oldValue.actif ? "Yes" : "No"}</Typography>
-                            </Box>
-                        </>
+                        {description.groupData.newValue && (
+                            <GroupValues title="New Value: " values={description.groupData.newValue} />
                         )}
-                    </Box>
-                )
+                    </Box>)
             }
             {
-                userAuthorities && userAuthoritiesData && (
+                description.userAuthorities && description.userAuthoritiesData.oldValue.length !== 0 && description.userAuthoritiesData.newValue.length !== 0 && (
                     <Box>
                         <Typography variant="h6">User Authorities:</Typography>
-                        {userAuthoritiesData.oldValue && userAuthoritiesData.oldValue.map((auth, index) => (
-                            <div key={index}>
-                                <Typography variant='body1' paddingLeft={1}>Old Value:</Typography>
-                                <Box sx={{ paddingLeft: 3 }}>
-                                    <Typography>ID User Authority: {auth.idUserAuthority}</Typography>
-                                    <Typography>Authority Libelle: {auth.authority.libelle}</Typography>
-                                    <Typography>Authority Type: {auth.authority.authorityType.libelle}</Typography>
-                                    <Typography>Module Name: {auth.authority.module.moduleName}</Typography>
-                                </Box>
-                            </div>
-                        ))}
-                        {userAuthoritiesData.newValue && userAuthoritiesData.newValue.map((auth, index) => (
-                            <div key={index}>
-                                <Typography variant='body1' paddingLeft={1}>New Value:</Typography>
-                                <Box sx={{ paddingLeft: 3 }}>
-                                    <Typography>ID User Authority: {auth.idUserAuthority}</Typography>
-                                    <Typography>Authority Libelle: {auth.authority.libelle}</Typography>
-                                    <Typography>Authority Type: {auth.authority.authorityType.libelle}</Typography>
-                                    <Typography>Module Name: {auth.authority.module.moduleName}</Typography>
-                                </Box>
-                            </div>
-                        ))}
+                        {description.userAuthoritiesData.oldValue && (
+                            <UserAuthoritiesValues title="Old Value: " values={description.userAuthoritiesData.oldValue} />
+                        )}
+                        {description.userAuthoritiesData.newValue && (
+                            <UserAuthoritiesValues title="New Value: " values={description.userAuthoritiesData.newValue} />
+                        )}
                     </Box>
                 )
             }
             {
-                uuid && uuidData && (
+                description.uuid && description.uuidData && (
+                    <PropertyValues title="UUID" oldValue={description.uuidData.oldValue} newValue={description.uuidData.newValue} />
+                )
+            }
+            {
+                description.authority && description.authorityData && (
                     <Box>
-                        <Typography variant="h6">UUID:</Typography>
-                        {uuidData.oldValue && (
-                            <Typography variant='body1' paddingLeft={1}>Old Value: {uuidData.oldValue}</Typography>
+                        <Typography variant="h6">Authority:</Typography>
+                        {description.authorityData.oldValue && (
+                            <AuthorityValues title="Old Value: " values={description.authorityData.oldValue} />
                         )}
-                        {uuidData.newValue && (
-                            <Typography variant='body1' paddingLeft={1}>New Value: {uuidData.newValue}</Typography>
+                        {description.authorityData.newValue && (
+                            <AuthorityValues title="New Value: " values={description.authorityData.newValue} />
                         )}
                     </Box>
                 )
             }
-            {authority && authorityData && (
-                <Box>
-                    <Typography variant="h6">Authority:</Typography>
-                    {authorityData.oldValue && (
-                        <div>
-                            <Typography variant='body1' paddingLeft={1}>Old Value:</Typography>
-                            <Box sx={{ paddingLeft: 3 }}>
-                                <Typography>Authority ID: {authorityData.oldValue.idAuthority}</Typography>
-                                <Typography>Libelle: {authorityData.oldValue.libelle}</Typography>
-                                <Typography>Active: {authorityData.oldValue.actif ? "Yes" : "No"}</Typography>
-                                <Typography>Authority Type: {authorityData.oldValue.authorityType.libelle}</Typography>
-                                <Typography>Module:</Typography>
-                                <Box sx={{ paddingLeft: 2 }}>
-                                    <Typography>Module ID: {authorityData.oldValue.module.idModule}</Typography>
-                                    <Typography>URI: {authorityData.oldValue.module.uri}</Typography>
-                                    <Typography>Icon: {authorityData.oldValue.module.icon}</Typography>
-                                    <Typography>Color: {authorityData.oldValue.module.color}</Typography>
-                                    <Typography>Module Name: {authorityData.oldValue.module.moduleName}</Typography>
-                                    <Typography>Module Code: {authorityData.oldValue.module.moduleCode}</Typography>
-                                </Box>
-                            </Box>
-                        </div>
-                    )}
-                    {authorityData.newValue && (
-                        <div>
-                            <Typography variant='body1' paddingLeft={1}>New Value:</Typography>
-                            <Box sx={{ paddingLeft: 3 }}>
-                                <Typography>Authority ID: {authorityData.newValue.idAuthority}</Typography>
-                                <Typography>Libelle: {authorityData.newValue.libelle}</Typography>
-                                <Typography>Active: {authorityData.newValue.actif ? "Yes" : "No"}</Typography>
-                                <Typography>Authority Type: {authorityData.newValue.authorityType.libelle}</Typography>
-                                <Typography>Module:</Typography>
-                                <Box sx={{ paddingLeft: 2 }}>
-                                    <Typography>Module ID: {authorityData.newValue.module.idModule}</Typography>
-                                    <Typography>URI: {authorityData.newValue.module.uri}</Typography>
-                                    <Typography>Icon: {authorityData.newValue.module.icon}</Typography>
-                                    <Typography>Color: {authorityData.newValue.module.color}</Typography>
-                                    <Typography>Module Name: {authorityData.newValue.module.moduleName}</Typography>
-                                    <Typography>Module Code: {authorityData.newValue.module.moduleCode}</Typography>
-                                </Box>
-                            </Box>
-                        </div>
-                    )}
-                </Box>
-            )}
-            {granted && grantedData && (
-                <Box>
-                    <Typography variant="h6">Granted:</Typography>
-                    {grantedData.oldValue && (
-                        <Typography variant='body1' paddingLeft={1}>Old Value: {grantedData.oldValue ? "Yes" : "No"}</Typography>
-                    )}
-                    {grantedData.newValue && (
-                        <Typography>New Value: {grantedData.newValue ? "Yes" : "No"}</Typography>
-                    )}
-                </Box>
-            )}
-            {user && userData && (
-                <Box>
-                    <Typography variant="h6">User:</Typography>
-                    {userData.oldValue && (
-                        <div>
-                            <Typography variant='body1' paddingLeft={1}>Old Value:</Typography>
-                            <Box sx={{ paddingLeft: 3 }}>
-                                <Typography>User ID: {userData.oldValue.idUser}</Typography>
-                                <Typography>UUID: {userData.oldValue.uuid}</Typography>
-                                <Typography>Username: {userData.oldValue.userName}</Typography>
-                                <Typography>First Name: {userData.oldValue.firstName}</Typography>
-                                <Typography>Last Name: {userData.oldValue.lastName}</Typography>
-                                <Typography>Email: {userData.oldValue.email}</Typography>
-                                <Typography>Phone Number: {userData.oldValue.phoneNumber}</Typography>
-                                <Typography>Active: {userData.oldValue.actif ? "Yes" : "No"}</Typography>
-                                <Typography>Group:</Typography>
-                                <Box sx={{ paddingLeft: 2 }}>
-                                    <Typography>Group ID: {userData.oldValue.group.idGroup}</Typography>
-                                    <Typography>Libelle: {userData.oldValue.group.libelle}</Typography>
-                                    <Typography>Active: {userData.oldValue.group.actif ? "Yes" : "No"}</Typography>
-                                </Box>
-                                <Typography>User Authorities:</Typography>
-                                {userData.oldValue.userAuthorities.map((auth, authIndex) => (
-                                    <Box key={authIndex} sx={{ paddingLeft: 5 }}>
-                                        <Typography>Authority ID: {auth.authority.idAuthority}</Typography>
-                                        <Typography>Libelle: {auth.authority.libelle}</Typography>
-                                        <Typography>Active: {auth.authority.actif ? "Yes" : "No"}</Typography>
-                                        <Typography>Authority Type: {auth.authority.authorityType.libelle}</Typography>
-                                        <Typography>Module:</Typography>
-                                        <Box sx={{ paddingLeft: 2 }}>
-                                            <Typography>Module ID: {auth.authority.module.idModule}</Typography>
-                                            <Typography>URI: {auth.authority.module.uri}</Typography>
-                                            <Typography>Icon: {auth.authority.module.icon}</Typography>
-                                            <Typography>Color: {auth.authority.module.color}</Typography>
-                                            <Typography>Module Name: {auth.authority.module.moduleName}</Typography>
-                                            <Typography>Module Code: {auth.authority.module.moduleCode}</Typography>
-                                        </Box>
-                                    </Box>
-                                ))}
-                                <Typography>Modules:</Typography>
-                                {userData.oldValue.modules.map((mod, modIndex) => (
-                                    <Box key={modIndex} sx={{ paddingLeft: 5 }}>
-                                        <Typography>Module ID: {mod.idModule}</Typography>
-                                        <Typography>URI: {mod.uri}</Typography>
-                                        <Typography>Icon: {mod.icon}</Typography>
-                                        <Typography>Color: {mod.color}</Typography>
-                                        <Typography>Module Name: {mod.moduleName}</Typography>
-                                        <Typography>Module Code: {mod.moduleCode}</Typography>
-                                    </Box>
-                                ))}
-                                <Typography>Roles:</Typography>
-                                {userData.oldValue.roles.map((role, roleIndex) => (
-                                    <Box key={roleIndex} sx={{ paddingLeft: 5 }}>
-                                        <Typography>Role ID: {role.idRole}</Typography>
-                                        <Typography>Libelle: {role.libelle}</Typography>
-                                        <Typography>Active: {role.actif ? "Yes" : "No"}</Typography>
-                                        <Typography>Module:</Typography>
-                                        <Box sx={{ paddingLeft: 2 }}>
-                                            <Typography>Module ID: {role.module.idModule}</Typography>
-                                            <Typography>URI: {role.module.uri}</Typography>
-                                            <Typography>Icon: {role.module.icon}</Typography>
-                                            <Typography>Color: {role.module.color}</Typography>
-                                            <Typography>Module Name: {role.module.moduleName}</Typography>
-                                            <Typography>Module Code: {role.module.moduleCode}</Typography>
-                                        </Box>
-                                        <Typography>Authority Set:</Typography>
-                                        {role.authoritySet.map((auth, authIndex) => (
-                                            <Box key={authIndex} sx={{ paddingLeft: 5 }}>
-                                                <Typography>Authority ID: {auth.idAuthority}</Typography>
-                                                <Typography>Libelle: {auth.libelle}</Typography>
-                                                <Typography>Active: {auth.actif ? "Yes" : "No"}</Typography>
-                                                <Typography>Authority Type: {auth.authorityType.libelle}</Typography>
-                                                <Typography>Module:</Typography>
-                                                <Box sx={{ paddingLeft: 2 }}>
-                                                    <Typography>Module ID: {auth.module.idModule}</Typography>
-                                                    <Typography>URI: {auth.module.uri}</Typography>
-                                                    <Typography>Icon: {auth.module.icon}</Typography>
-                                                    <Typography>Color: {auth.module.color}</Typography>
-                                                    <Typography>Module Name: {auth.module.moduleName}</Typography>
-                                                    <Typography>Module Code: {auth.module.moduleCode}</Typography>
-                                                </Box>
-                                            </Box>
-                                        ))}
-                                    </Box>
-                                ))}
-                            </Box>
-                        </div>
-                    )}
-                    {userData.newValue && (
-                        <div>
-                            <Typography variant='body1' paddingLeft={1}>New Value:</Typography>
-                            <Box sx={{ paddingLeft: 3 }}>
-                                <Typography>User ID: {userData.newValue.idUser}</Typography>
-                                <Typography>UUID: {userData.newValue.uuid}</Typography>
-                                <Typography>Username: {userData.newValue.userName}</Typography>
-                                <Typography>First Name: {userData.newValue.firstName}</Typography>
-                                <Typography>Last Name: {userData.newValue.lastName}</Typography>
-                                <Typography>Email: {userData.newValue.email}</Typography>
-                                <Typography>Phone Number: {userData.newValue.phoneNumber}</Typography>
-                                <Typography>Active: {userData.newValue.actif ? "Yes" : "No"}</Typography>
-                                <Typography>Group:</Typography>
-                                <Box sx={{ paddingLeft: 2 }}>
-                                    <Typography>Group ID: {userData.newalue.group.idGroup}</Typography>
-                                    <Typography>Libelle: {userData.newValue.group.libelle}</Typography>
-                                    <Typography>Active: {userData.newValue.group.actif ? "Yes" : "No"}</Typography>
-                                </Box>
-                                <Typography>User Authorities:</Typography>
-                                {userData.newValue.userAuthorities.map((auth, authIndex) => (
-                                    <Box key={authIndex} sx={{ paddingLeft: 5 }}>
-                                        <Typography>Authority ID: {auth.authority.idAuthority}</Typography>
-                                        <Typography>Libelle: {auth.authority.libelle}</Typography>
-                                        <Typography>Active: {auth.authority.actif ? "Yes" : "No"}</Typography>
-                                        <Typography>Authority Type: {auth.authority.authorityType.libelle}</Typography>
-                                        <Typography>Module:</Typography>
-                                        <Box sx={{ paddingLeft: 2 }}>
-                                            <Typography>Module ID: {auth.authority.module.idModule}</Typography>
-                                            <Typography>URI: {auth.authority.module.uri}</Typography>
-                                            <Typography>Icon: {auth.authority.module.icon}</Typography>
-                                            <Typography>Color: {auth.authority.module.color}</Typography>
-                                            <Typography>Module Name: {auth.authority.module.moduleName}</Typography>
-                                            <Typography>Module Code: {auth.authority.module.moduleCode}</Typography>
-                                        </Box>
-                                    </Box>
-                                ))}
-                                <Typography>Modules:</Typography>
-                                {userData.newValue.modules.map((mod, modIndex) => (
-                                    <Box key={modIndex} sx={{ paddingLeft: 5 }}>
-                                        <Typography>Module ID: {mod.idModule}</Typography>
-                                        <Typography>URI: {mod.uri}</Typography>
-                                        <Typography>Icon: {mod.icon}</Typography>
-                                        <Typography>Color: {mod.color}</Typography>
-                                        <Typography>Module Name: {mod.moduleName}</Typography>
-                                        <Typography>Module Code: {mod.moduleCode}</Typography>
-                                    </Box>
-                                ))}
-                                <Typography>Roles:</Typography>
-                                {userData.newValue.roles.map((role, roleIndex) => (
-                                    <Box key={roleIndex} sx={{ paddingLeft: 5 }}>
-                                        <Typography>Role ID: {role.idRole}</Typography>
-                                        <Typography>Libelle: {role.libelle}</Typography>
-                                        <Typography>Active: {role.actif ? "Yes" : "No"}</Typography>
-                                        <Typography>Module:</Typography>
-                                        <Box sx={{ paddingLeft: 2 }}>
-                                            <Typography>Module ID: {role.module.idModule}</Typography>
-                                            <Typography>URI: {role.module.uri}</Typography>
-                                            <Typography>Icon: {role.module.icon}</Typography>
-                                            <Typography>Color: {role.module.color}</Typography>
-                                            <Typography>Module Name: {role.module.moduleName}</Typography>
-                                            <Typography>Module Code: {role.module.moduleCode}</Typography>
-                                        </Box>
-                                        <Typography>Authority Set:</Typography>
-                                        {role.authoritySet.map((auth, authIndex) => (
-                                            <Box key={authIndex} sx={{ paddingLeft: 5 }}>
-                                                <Typography>Authority ID: {auth.idAuthority}</Typography>
-                                                <Typography>Libelle: {auth.libelle}</Typography>
-                                                <Typography>Active: {auth.actif ? "Yes" : "No"}</Typography>
-                                                <Typography>Authority Type: {auth.authorityType.libelle}</Typography>
-                                                <Typography>Module:</Typography>
-                                                <Box sx={{ paddingLeft: 2 }}>
-                                                    <Typography>Module ID: {auth.module.idModule}</Typography>
-                                                    <Typography>URI: {auth.module.uri}</Typography>
-                                                    <Typography>Icon: {auth.module.icon}</Typography>
-                                                    <Typography>Color: {auth.module.color}</Typography>
-                                                    <Typography>Module Name: {auth.module.moduleName}</Typography>
-                                                    <Typography>Module Code: {auth.module.moduleCode}</Typography>
-                                                </Box>
-                                            </Box>
-                                        ))}
-                                    </Box>
-                                ))}
-                            </Box>
-                        </div>
-
-                    )}
-                </Box>
-            )}
+            {
+                description.granted && description.grantedData && (
+                    <PropertyValues title="Granted" oldValue={description.grantedData.oldValue} newValue={description.grantedData.newValue} />
+                )
+            }
+            {
+                description.user && description.userData && (
+                    <Box>
+                        <Typography variant="h6">User:</Typography>
+                        {description.userData.oldValue && (
+                            <UserValues title={"Old Value:"} values={description.userData.oldValue} />
+                        )}
+                        {description.userData.newValue && (
+                            <UserValues title={"New Value:"} values={description.userData.newValue} />
+                        )}
+                    </Box>
+                )
+            }
         </div >
     )
 }

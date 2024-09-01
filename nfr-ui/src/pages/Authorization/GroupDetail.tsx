@@ -1,4 +1,4 @@
-import { Box, Button, FormControlLabel, Paper, SelectChangeEvent, Stack, Switch, TextField } from '@mui/material'
+import { Box, Paper, SelectChangeEvent, Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import SnackBar from '../../components/Common/Reusable-components/SnackBar'
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,18 +8,20 @@ import axiosInstance from '../../utils/AxiosInstance';
 import BreadCrumbs from '../../components/Common/Reusable-components/BreadCrumbs';
 import { useKeycloakStore } from '../../store/AuthStore/KeycloakStore';
 import Unauthorized from '../Errors/Unauthorized';
+import TextFieldForm from '../../components/Common/Reusable-components/AdminComponent/TextFieldForm';
+import SwitchForm from '../../components/Common/Reusable-components/AdminComponent/SwitchForm';
+import ButtonSaveChanges from '../../components/Common/Reusable-components/AdminComponent/ButtonSaveChanges';
 
 const GroupDetail = () => {
-
     const { id } = useParams<{ id: string }>();
+    const { updateGroup } = useGroupStore();
+    const { authorities: userAuthorities } = useKeycloakStore()
+    const { isOpenSnackbar, openSnackbar, closeSnackbar } = useSnackbarStore()
     const [group, setGroup] = useState<Group | null>(null)
     const [formData, setFormData] = useState<Record<string, any>>({});
-    const { isOpenSnackbar, openSnackbar, closeSnackbar } = useSnackbarStore()
     const [snackbarMsg, setSnackbarMsg] = useState<string>('')
-    const { updateGroup } = useGroupStore();
-    const navigate = useNavigate()
-    const { authorities: userAuthorities } = useKeycloakStore()
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'warning' | 'info'>('success');
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchGroup = async () => {
@@ -49,16 +51,20 @@ const GroupDetail = () => {
             ...prevFormData,
             [name]: status
         }));
-        if (checked) {
-            // eslint-disable-next-line
-            openSnackbar();
+        try {
+            if (checked) {
+                setSnackbarSeverity('success')
+                setSnackbarMsg(`Group Enabled successfully`);
+                openSnackbar();
+            } else {
+                setSnackbarSeverity('success')
+                setSnackbarMsg(`Group Disabled successfully`);
+                openSnackbar();
+            }
+        } catch (error) {
             setSnackbarSeverity('success')
-            setSnackbarMsg(`Group Enabled successfully`);
-        } else {
-            // eslint-disable-next-line
+            setSnackbarMsg(`Failed to enable or disable Group`);
             openSnackbar();
-            setSnackbarSeverity('success')
-            setSnackbarMsg(`Group Disabled successfully`);
         }
     };
 
@@ -73,78 +79,58 @@ const GroupDetail = () => {
 
             try {
                 await updateGroup(Number(id), groupData);
-                // eslint-disable-next-line
-                openSnackbar();
                 setSnackbarSeverity('success')
                 setSnackbarMsg(`Group updated successfully`);
+                openSnackbar();
                 setTimeout(() => {
                     navigate('/admin/groups')
-                }, 5000);
+                }, 4000);
 
-                console.log('Group updated successfully');
             } catch (error) {
-                // eslint-disable-next-line
-                openSnackbar();
                 setSnackbarSeverity('error')
                 setSnackbarMsg(`Failed to update group`);
+                openSnackbar();
                 console.error('Error updating group:', error);
             }
         }
     }
 
+    if (!userAuthorities.some(auth => auth.data === 'GROUP_VIEW' && auth.isGranted)) {
+        return <Unauthorized />;
+    }
+
     return (
         <>
-            {userAuthorities.some(auth => auth.data === 'GROUP_VIEW' && auth.isGranted) ? (
-                <>
-                    <BreadCrumbs to='/admin/groups' text1='Groups' text2='Group' />
-                    <Stack sx={{ py: 2, height: '80%', marginBottom: 4, boxSizing: 'border-box', fontFamily: 'Nunito, sans serif' }} direction="column">
-                        <Paper sx={{ flex: 1, mx: 'auto', width: '80%', p: 2 }}>
-                            <Stack direction="column" spacing={1} sx={{ height: 1 }}>
-                                <Box component="form" onSubmit={handleSubmit}>
-                                    <TextField
-                                        size='small'
-                                        // key={field}
-                                        label='Group'
-                                        name='Group'
-                                        value={formData['Group'] || ''}
-                                        onChange={handleChange}
-                                        margin="normal"
-                                        fullWidth
-                                        sx={{ marginBottom: 1 }}
-                                    />
-
-                                    <Box display="flex" alignItems="center" sx={{ mt: 2 }}>
-                                        <FormControlLabel
-                                            control={
-                                                <Switch
-                                                    checked={formData['Status'] === 'Activated'}
-                                                    onChange={handleSwitchChange}
-                                                    name="Status"
-                                                    color="primary"
-                                                />
-                                            }
-                                            label="Status"
-                                        />
-                                    </Box>
-
-                                    {userAuthorities.some(auth => auth.data === 'GROUP_UPDATE' && auth.isGranted) && (<Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                                        Save Changes
-                                    </Button>)}
-                                </Box>
-                            </Stack>
-                        </Paper >
-                    </Stack >
-                    <SnackBar
-                        open={isOpenSnackbar}
-                        severity={snackbarSeverity}
-                        onClose={closeSnackbar}
-                        text={snackbarMsg}
-                    />
-                </>
-            ) : (
-                <Unauthorized />
-            )
-            }
+            <BreadCrumbs to='/admin/groups' text1='Groups' text2='Group' />
+            <Stack sx={{ py: 2, height: '80%', marginBottom: 4, boxSizing: 'border-box' }} direction="column">
+                <Paper sx={{ flex: 1, mx: 'auto', width: '80%', p: 2 }}>
+                    <Stack direction="column" spacing={1} sx={{ height: 1 }}>
+                        <Box component="form" onSubmit={handleSubmit}>
+                            <TextFieldForm
+                                label='Group'
+                                name='Group'
+                                value={formData['Group'] || ''}
+                                onChange={handleChange}
+                            />
+                            <SwitchForm
+                                checked={formData['Status'] === 'Activated'}
+                                onChange={handleSwitchChange}
+                                label='Status'
+                            />
+                            <ButtonSaveChanges
+                                userAuthorities={userAuthorities}
+                                updateAuthority='GROUP_UPDATE'
+                            />
+                        </Box>
+                    </Stack>
+                </Paper >
+            </Stack >
+            <SnackBar
+                open={isOpenSnackbar}
+                severity={snackbarSeverity}
+                onClose={closeSnackbar}
+                text={snackbarMsg}
+            />
         </>
     )
 }

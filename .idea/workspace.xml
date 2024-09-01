@@ -4,7 +4,51 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9ab8526c-c2b9-43d6-8c05-e6fd5dafc1e5" name="Changes" comment="" />
+    <list default="true" id="9ab8526c-c2b9-43d6-8c05-e6fd5dafc1e5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_21-05-2024_21_15__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_21-05-2024_21_15__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_21-05-2024_21_19__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_21-05-2024_21_19__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-auditlog-service/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-auditlog-service/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-auditlog-service/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-auditlog-service/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-auditlog-service/src/controllers/audit-controllers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-auditlog-service/src/controllers/audit-controllers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-auditlog-service/src/services/audit-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-auditlog-service/src/services/audit-service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Common/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/components/Common/Common/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Common/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/components/Common/Common/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Common/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/components/Common/Common/Sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/BreadCrumbs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/BreadCrumbs.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/ButtonForm.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/ButtonMore.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/EventItem.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/Filter.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/FormAdd.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/ListItemComponent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/PaginationTable.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/Popup.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/PopupEditUser.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/Search.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/components/Common/Reusable-components/TableComponent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Auditing/Event.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Auditing/Event.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Auditing/Events.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Auditing/Events.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Auditing/descriptions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Auditing/descriptions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/Authorities.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/Authorities.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/AuthorityDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/AuthorityDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/AuthorityTypeDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/AuthorityTypeDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/AuthorityTypes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/AuthorityTypes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/GroupDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/GroupDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/Groups.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/Groups.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/ModuleDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/ModuleDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/Modules.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/Modules.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/RoleDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/RoleDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/Roles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/Roles.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/UserDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/UserDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/Users.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Authorization/Users.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Home/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Home/Home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Notification/NotificationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Notification/NotificationPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/pages/Notification/Notifications.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/pages/Notification/Notifications.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/store/AuditStore/EventStore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/store/AuditStore/EventStore.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfr-ui/src/store/AuthStore/KeycloakStore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nfr-ui/src/store/AuthStore/KeycloakStore.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,30 +102,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.NfrApiGatewayApplication.executor": "Run",
-    "Spring Boot.NfrDiscoveryServerApplication.executor": "Run",
-    "Spring Boot.nfrAdminServiceApplication.executor": "Run",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Nour/Desktop/myNFRproject/MicroNFR",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.configurations.included.in.services": "true",
-    "ts.external.directory.path": "C:\\Users\\TRETEC\\Desktop\\nfr_system\\nfr-notification-service\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.NfrApiGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.NfrDiscoveryServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.nfrAdminServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/TRETEC/Desktop/MicroNFR_project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\TRETEC\\Desktop\\nfr_system\\nfr-notification-service\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -127,6 +171,14 @@
       <item itemvalue="Spring Boot.nfrAdminServiceApplication" />
       <item itemvalue="Spring Boot.NfrDiscoveryServerApplication" />
     </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -198,6 +250,16 @@
       <workItem from="1717790021606" duration="8261000" />
       <workItem from="1717876233614" duration="1678000" />
       <workItem from="1719026759298" duration="9450000" />
+      <workItem from="1719056362629" duration="3818000" />
+      <workItem from="1719139409321" duration="1331000" />
+      <workItem from="1720177057040" duration="610000" />
+      <workItem from="1720177911514" duration="2502000" />
+      <workItem from="1720723174290" duration="3131000" />
+      <workItem from="1724955315458" duration="332000" />
+      <workItem from="1724955696244" duration="314000" />
+      <workItem from="1724959047772" duration="310000" />
+      <workItem from="1724968475021" duration="662000" />
+      <workItem from="1725033385621" duration="1651000" />
     </task>
     <servers />
   </component>

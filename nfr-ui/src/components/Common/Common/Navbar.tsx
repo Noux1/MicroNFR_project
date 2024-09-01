@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, Notifications } from '@mui/icons-material';
-import { AppBar, Avatar, Badge, IconButton, MenuItem, Popover, Stack, Toolbar } from '@mui/material';
-import axios from 'axios'; 
+import { AppBar, Badge, IconButton, MenuItem, Popover, Stack, Toolbar } from '@mui/material';
 import { useModeStore, useStyleStore } from '../../../store/CommonStore/StyleStore';
 import { setupSocket } from '../../../socketFunctions';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 //@ts-ignore
 import notificationSound from '../../../assets/notification_sound.mp3';
 import { useUserStore } from '../../../store/AdminStore/UserStore';
@@ -15,7 +14,7 @@ const Navbar = () => {
     const { openSidebar, setOpenSidebar } = useStyleStore();
     const { mode } = useModeStore();
     const [anchorEl, setAnchorEl] = useState(null);
-    const {user}=useUserStore()
+    const { user } = useUserStore()
     const [notifications, setNotifications] = useState([]);
     const [unseenCount, setUnseenCount] = useState(0);
     const maxVisibleNotifications = 4;
@@ -24,13 +23,13 @@ const Navbar = () => {
 
     useEffect(() => {
         if (user.uuid) {
-          socket.emit('join-room', user.uuid);
+            socket.emit('join-room', user.uuid);
         }
-      }, [user.uuid]);
+    }, [user.uuid]);
 
 
     useEffect(() => {
-        
+
         socket.on('notification', (notification) => {
             console.log(notification);
             const audio = new Audio(notificationSound);
@@ -52,31 +51,31 @@ const Navbar = () => {
         };
     }, []);
 
-useEffect(() => {
-    const fetchNotifications = async () => {
-      if (!user || !user.uuid) {
-        return;
-      }
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            if (!user || !user.uuid) {
+                return;
+            }
 
-      try {
-        const response = await axiosInstance2.get(`/users/${user.uuid}/notifications`);
-        const notificationsData = response.data.notifications;
-        if (notificationsData && notificationsData.length > 0) {
-          const reversedNotifications = notificationsData.reverse();
-          setNotifications(reversedNotifications);
-          const unseenNotifications = reversedNotifications.filter(notification => !notification.seen);
-          setUnseenCount(unseenNotifications.length);
-        } else {
-          setNotifications([]);
-          setUnseenCount(0);
-        }
-      } catch (error) {
-        console.error('Failed to get notifications for user:', error);
-      }
-    };
+            try {
+                const response = await axiosInstance2.get(`/users/${user.uuid}/notifications`);
+                const notificationsData = response.data.notifications;
+                if (notificationsData && notificationsData.length > 0) {
+                    const reversedNotifications = notificationsData.reverse();
+                    setNotifications(reversedNotifications);
+                    const unseenNotifications = reversedNotifications.filter(notification => !notification.seen);
+                    setUnseenCount(unseenNotifications.length);
+                } else {
+                    setNotifications([]);
+                    setUnseenCount(0);
+                }
+            } catch (error) {
+                console.error('Failed to get notifications for user:', error);
+            }
+        };
 
-    fetchNotifications();
-  }, [user]);
+        fetchNotifications();
+    }, [user]);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -138,9 +137,7 @@ useEffect(() => {
                                 <Notifications />
                             )}
                         </IconButton>
-                        <IconButton>
-                            <Avatar />
-                        </IconButton>
+
                     </Stack>
                     <Popover
                         id={id}
@@ -178,7 +175,7 @@ useEffect(() => {
                             const isYesterday = new Date(currentDate.getTime() - 86400000).toDateString() === notificationDateTime.toDateString();
 
                             return (
-                                <MenuItem key={index} onClick={() => { handleNotificationClick(notification.id, notification.seen, `/notifications/${notification.id}`); handleClose(); }} sx={{ height: itemHeight, display: 'flex', flexDirection: 'column', alignItems: 'flex-start',backgroundColor: notification.seen ? 'transparent' : (mode === 'light' ? '#F5F8FF' : '#5e5e5e') }}>
+                                <MenuItem key={index} onClick={() => { handleNotificationClick(notification.id, notification.seen, `/notifications/${notification.id}`); handleClose(); }} sx={{ height: itemHeight, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', backgroundColor: notification.seen ? 'transparent' : (mode === 'light' ? '#F5F8FF' : '#5e5e5e') }}>
                                     <div style={{ marginBottom: '4px' }}>
                                         <div style={{ fontWeight: 'bold' }}>{notification.subject}</div>
                                         <div style={{ width: '100%' }}>{notification.body}</div>

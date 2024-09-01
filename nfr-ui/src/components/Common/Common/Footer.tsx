@@ -18,12 +18,8 @@ const Footer = () => {
                 zIndex: -1000
             }}
         >
-            <Typography variant="body1" sx={
-                {
-                    fontFamily: 'Nunito, sans serif'
-                }
-            }>
-                &copy; {currentYear} . Tous droits réservés.
+            <Typography variant="body1" >
+                &copy; {currentYear}. Tous droits réservés.
             </Typography>
         </Box >
     );

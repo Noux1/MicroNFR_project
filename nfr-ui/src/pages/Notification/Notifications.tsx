@@ -37,40 +37,39 @@ const Notifications = () => {
     return (
         <Box
             sx={{
-                height: 500, marginX: 6
+                height: 400, marginX: 6
             }}>
             <Stack direction='row' margin={2} justifyContent='space-between'>
-                <Typography variant='h6' sx={{ fontFamily: 'Nunito, sans serif' }}>Notifications</Typography>
+                <Typography variant='h6' >Notifications</Typography>
                 <IconButton size='small' onClick={refreshEvents}><Refresh /></IconButton>
             </Stack>
-            
-                <DataGrid
-                    columns={[
-                        ...columns,
-                        {
-                            field: 'seen',
-                            headerName: 'Status',
-                            width: 100,
-                            renderCell: (params: GridCellParams) => (
-                                params.row.seen ? <span>Seen</span> : <span>Not Seen</span>
-                            )
-                        },
-                        {
-                            field: 'viewDetails',
-                            headerName: 'View Details',
-                            width: 100,
-                            renderCell: (params: GridCellParams) => (
-                                <IconButton onClick={() => handleViewDetails(params.row.id)}>
-                                    <Add />
-                                </IconButton>
-                            )
-                        }
-                    ]}
-                    rows={notifications.map(notif => ({ ...notif, id: notif.id }))}
-                    getRowId={row => row.id}
-                    sx={{ fontFamily: 'Nunito, sans serif' }}
-                />
-            
+
+            <DataGrid
+                columns={[
+                    ...columns,
+                    {
+                        field: 'seen',
+                        headerName: 'Status',
+                        width: 100,
+                        renderCell: (params: GridCellParams) => (
+                            params.row.seen ? <span>Seen</span> : <span>Not Seen</span>
+                        )
+                    },
+                    {
+                        field: 'viewDetails',
+                        headerName: 'View Details',
+                        width: 100,
+                        renderCell: (params: GridCellParams) => (
+                            <IconButton onClick={() => handleViewDetails(params.row.id)}>
+                                <Add />
+                            </IconButton>
+                        )
+                    }
+                ]}
+                rows={notifications.map(notif => ({ ...notif, id: notif.id }))}
+                getRowId={row => row.id}
+            />
+
         </Box>
     );
 

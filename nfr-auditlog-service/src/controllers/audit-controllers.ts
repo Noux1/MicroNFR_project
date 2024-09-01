@@ -35,7 +35,7 @@ export const getEventById = async (req: Request, res: Response): Promise<void> =
 }
 
 export const filterAuditEvents = async (req: Request, res: Response): Promise<void> => {
-  const { utilisateur, action, moduleName, startDate, endDate, entity } = req.query;
+  const { utilisateur, action, moduleName, startDate, endDate, entityName } = req.query;
 
 
   // Convert startDate and endDate strings to Date objects
@@ -43,7 +43,7 @@ export const filterAuditEvents = async (req: Request, res: Response): Promise<vo
   const endDateObj = endDate ? new Date(endDate as string) : undefined;
 
   try {
-    const filteredEvents = await auditService.filterAuditEvents(utilisateur as string, action as string, moduleName as string, entity as string, startDateObj, endDateObj);
+    const filteredEvents = await auditService.filterAuditEvents(utilisateur as string, action as string, moduleName as string, entityName as string, startDateObj, endDateObj);
     res.json(filteredEvents);
   } catch (error) {
     res.status(500).json({ message: 'An error occurred while filtering audit events.' });

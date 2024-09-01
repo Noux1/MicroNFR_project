@@ -14,7 +14,6 @@ import Modules from "./pages/Authorization/Modules";
 import Users from "./pages/Authorization/Users";
 import { useEffect } from "react";
 import { useModeStore, useStyleStore } from "./store/CommonStore/StyleStore";
-import Keycloak from "keycloak-js";
 import Sidebar from "./components/Common/Common/Sidebar";
 import { useKeycloakStore } from "./store/AuthStore/KeycloakStore";
 import Groups from "./pages/Authorization/Groups";
@@ -33,8 +32,11 @@ import Unauthorized from "./pages/Errors/Unauthorized";
 const lightTheme = createTheme({
     palette: {
         mode: 'light',
-        // Ajoutez vos préférences de couleur et de thème pour le mode clair ici
+
     },
+    typography: {
+        fontFamily: 'Nunito, sans serif'
+    }
 });
 
 const darkTheme = createTheme({
@@ -43,6 +45,9 @@ const darkTheme = createTheme({
         background: {
             default: '#283042'
         }
+    },
+    typography: {
+        fontFamily: 'Nunito, sans serif'
     }
 })
 function App() {

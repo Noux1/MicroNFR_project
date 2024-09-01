@@ -1,23 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-    Box,
-    Button,
-    Chip,
-    FormControl,
-    FormControlLabel,
-    InputLabel,
-    MenuItem,
-    Paper,
-    Select,
-    SelectChangeEvent,
-    Stack,
-    Switch,
-    TextField,
-    Typography,
+    Box, Button, Chip, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Stack
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
-
 import { User, useUserStore } from '../../store/AdminStore/UserStore';
 import { useGroupStore } from '../../store/AdminStore/GroupStore';
 import { useAuthorityStore } from '../../store/AdminStore/AuthorityStore';
@@ -29,26 +15,30 @@ import axiosInstance from '../../utils/AxiosInstance';
 import BreadCrumbs from '../../components/Common/Reusable-components/BreadCrumbs';
 import { useKeycloakStore } from '../../store/AuthStore/KeycloakStore';
 import Unauthorized from '../Errors/Unauthorized';
-
+import TextFieldForm from '../../components/Common/Reusable-components/AdminComponent/TextFieldForm';
+import SelectFieldFrom from '../../components/Common/Reusable-components/AdminComponent/SelectFieldFrom';
+import AssignedItems from '../../components/Common/Reusable-components/AdminComponent/AssignedItems';
+import SwitchForm from '../../components/Common/Reusable-components/AdminComponent/SwitchForm';
+import ButtonSaveChanges from '../../components/Common/Reusable-components/AdminComponent/ButtonSaveChanges';
 
 const UserDetail = () => {
     const { id } = useParams<{ id: string }>();
-    const [user, setUser] = useState<User | null>(null);
     const { getUser, updateUser, getAuthoritiesUser, authoritiesUser, modulesUser, rolesUser } = useUserStore();
     const { modules, getModules } = useModuleStore();
     const { roles, getRoles } = useRoleStore();
     const { authorities, getAuthorities } = useAuthorityStore();
     const { groups, getGroups } = useGroupStore();
+    const { authorities: userAuthorities } = useKeycloakStore();
+    const { isOpenSnackbar, openSnackbar, closeSnackbar } = useSnackbarStore()
+    const [user, setUser] = useState<User | null>(null);
+    const [formData, setFormData] = useState<Record<string, any>>({});
     const [assignedAuthorities, setAssignedAuthorities] = useState<any>(authoritiesUser);
     const [assignedModules, setAssignedModules] = useState<any>(modulesUser);
     const [assignedRoles, setAssignedRoles] = useState<any>(rolesUser);
     const [selectedAuthId, setSelectedAuthId] = useState<number | null>(null)
     const [selectedModuleId, setSelectedModuleId] = useState<number | null>(null)
     const [selectedRoleId, setSelectedRoleId] = useState<number | null>(null)
-    const [formData, setFormData] = useState<Record<string, any>>({});
-    const { isOpenSnackbar, openSnackbar, closeSnackbar } = useSnackbarStore()
     const [snackbarMsg, setSnackbarMsg] = useState<string>('')
-    const { authorities: userAuthorities } = useKeycloakStore()
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'warning' | 'info'>('success');
     const navigate = useNavigate()
 
@@ -58,8 +48,6 @@ const UserDetail = () => {
                 const userData = await getUser(Number(id));
                 setUser(userData);
                 setAssignedAuthorities(userData.authorityResponses || []);
-
-                // Set initial form data
                 setFormData({
                     'User Name': userData.userName,
                     'First Name': userData.firstName,
@@ -73,9 +61,7 @@ const UserDetail = () => {
                 console.error("Failed to fetch user", error);
             }
         };
-
         fetchUser();
-
     }, [id, getUser]);
 
     useEffect(() => {
@@ -84,8 +70,7 @@ const UserDetail = () => {
         getAuthorities()
         getGroups()
         getRoles()
-    }, [getModules, getAuthorities, getGroups, getRoles, getAuthoritiesUser]);
-
+    }, [getModules, getAuthorities, getGroups, getRoles, getAuthoritiesUser, id]);
 
     const handleAdd = async (formData: Record<string, any>, type: 'module' | 'role' | 'authority' | 'group' | 'requiredActions') => {
         if (id !== null) {
@@ -96,10 +81,9 @@ const UserDetail = () => {
                         if (selectedModule) {
                             await axiosInstance.put(`/user/${Number(id)}/module/${selectedModule.id}`);
                             setAssignedModules(prevModules => [...prevModules, selectedModule.moduleName])
-                            // eslint-disable-next-line
-                            openSnackbar();
                             setSnackbarSeverity('success')
                             setSnackbarMsg(`${type} added successfully`);
+                            openSnackbar();
                             console.log(`${type} added successfully`);
                         }
                         break;
@@ -108,10 +92,9 @@ const UserDetail = () => {
                         if (selectedRole) {
                             await axiosInstance.put(`/user/${Number(id)}/role/${selectedRole.id}`);
                             setAssignedRoles(prevRoles => [...prevRoles, selectedRole.libelle])
-                            // eslint-disable-next-line
-                            openSnackbar();
                             setSnackbarSeverity('success')
                             setSnackbarMsg(`${type} added successfully`);
+                            openSnackbar();
                             console.log(`${type} added successfully`);
                         }
                         break;
@@ -120,31 +103,25 @@ const UserDetail = () => {
                         if (selectedAuthority) {
                             await axiosInstance.put(`/user/${Number(id)}/authority/grant/${selectedAuthority.id}`);
                             setAssignedAuthorities(prevAuthorities => [...prevAuthorities, selectedAuthority.libelle]);
-                            // eslint-disable-next-line
-                            openSnackbar();
                             setSnackbarSeverity('success')
                             setSnackbarMsg(`${type} added successfully`);
+                            openSnackbar();
                             console.log(`${type} added successfully`);
-                            console.log(selectedAuthority.libelle)
-
                         }
                         break;
                     case 'requiredActions':
                         await axiosInstance.post(`/user/required-actions/${Number(id)}`, formData.requiredActions);
-                        // eslint-disable-next-line
-                        openSnackbar();
                         setSnackbarSeverity('success')
                         setSnackbarMsg(`${type} added successfully`);
+                        openSnackbar();
                         console.log(`${type} added successfully`);
                         break;
                 }
-
             } catch (error) {
                 console.error(`Error adding ${type}: `, error);
-                // eslint-disable-next-line
-                openSnackbar();
                 setSnackbarSeverity('error')
                 setSnackbarMsg(`Failed to add ${type}`);
+                openSnackbar();
             }
         }
     };
@@ -166,21 +143,16 @@ const UserDetail = () => {
                     default:
                         throw new Error('Invalid item type');
                 }
-                // Envoi de la requête DELETE à l'API
                 await axiosInstance.delete(url);
                 setAssignedAuthorities(prevAuthorities => prevAuthorities.filter(auth => auth.id !== itemId));
-                // eslint-disable-next-line
-                openSnackbar();
                 setSnackbarSeverity('success')
                 setSnackbarMsg(`${itemType} removed successfully`);
-
-                console.log('Authority removed successfully');
+                openSnackbar();
             } catch (error) {
                 console.error('Error removing authority:', error);
-                // eslint-disable-next-line
-                openSnackbar();
                 setSnackbarSeverity('error')
                 setSnackbarMsg(`Failed to remove ${itemType} `);
+                openSnackbar();
             }
         }
     };
@@ -198,23 +170,20 @@ const UserDetail = () => {
                         auth.id === authorityId ? { ...auth, granted } : auth
                     )
                 );
-                if (granted) {// eslint-disable-next-line
-                    openSnackbar();
+                if (granted) {
                     setSnackbarSeverity('success')
                     setSnackbarMsg(`Authority granted successfully`);
-                } else {
-                    // eslint-disable-next-line
                     openSnackbar();
+                } else {
                     setSnackbarSeverity('success')
                     setSnackbarMsg(`Authority revoked successfully`);
+                    openSnackbar();
                 }
-                console.log('Authority toggled successfully');
             } catch (error) {
                 console.error('Error toggling authority:', error);
-                // eslint-disable-next-line
-                openSnackbar();
                 setSnackbarSeverity('error')
                 setSnackbarMsg(`Failed to revoke or grant authorty`);
+                openSnackbar();
             }
         }
     };
@@ -231,54 +200,39 @@ const UserDetail = () => {
             ...prevFormData,
             [name]: status
         }));
-
         try {
             await axiosInstance.patch(`/user/enable-disableUser/${Number(id)}`, {
                 actif: checked
             });
-            openSnackbar();
             setSnackbarSeverity('success')
             setSnackbarMsg(`User ${checked ? 'Enabled' : 'Disabled'} successfully`);
+            openSnackbar();
         } catch (error) {
             console.error('Error updating user status:', error);
-            openSnackbar();
             setSnackbarSeverity('error')
-            setSnackbarMsg(`Failed to ${checked ? 'Enable' : 'Disable'}`);
+            setSnackbarMsg(`Failed to ${checked ? 'Enable' : 'Disable'} User`);
+            openSnackbar();
         }
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        if (!formData['Group']) {
-            console.error('Group is not selected');
-            return; // Sortir de la fonction si aucun module n'est sélectionné
-        }
 
-        // Récupérer le module sélectionné
-        const groupSelected = formData['Group'];
-        const selectedGroup = groups.find(group => group.libelle === groupSelected);
-        console.log(selectedGroup)
-        console.log(selectedGroup)
-        // Vérifier si un module correspondant a été trouvé
+        const selectedGroup = groups.find(group => group.libelle === formData['Group']);
         if (!selectedGroup) {
             console.error('Selected group not found');
-            return; // Sortir de la fonction si aucun module correspondant n'est trouvé
+            return;
         }
 
-        // Récupérer l'ID du module sélectionné
-        const groupId = selectedGroup.id;
-
-        // Si c'est une mise à jour de rôle, récupérer l'ID du module du backend
-        let groupIdRec: number | null = null;
+        let groupIdRec: number | null = null;// Si c'est une mise à jour de groupe, récupérer l'ID du groupe du backend
 
         try {
-            const responseGroup = await axiosInstance.get(`/group/${groupId}`);
+            const responseGroup = await axiosInstance.get(`/group/${selectedGroup.id}`);
             groupIdRec = responseGroup.data.id;
         } catch (error) {
             console.error('Error retrieving group ID from backend:', error);
             return; // Sortir de la fonction en cas d'erreur
         }
-
         if (Number(id) !== null && user !== null) {
             const userData = {
                 id: Number(id),
@@ -289,68 +243,25 @@ const UserDetail = () => {
                 email: formData['Email'],
                 phoneNumber: formData['Phone Number'],
                 actif: formData['Status'] === 'Activated',
-                groupId: groupIdRec !== null ? groupIdRec : groupId
+                groupId: groupIdRec !== null ? groupIdRec : selectedGroup.id
             };
-
             try {
                 await updateUser(Number(id), userData);
-                // await axiosInstance.patch(`/user/enable-disableUser/${Number(id)}`, {
-                //     actif: formData['Status'] === 'Activated'
-                // });
-                // eslint-disable-next-line
-                openSnackbar();
                 setSnackbarSeverity('success')
                 setSnackbarMsg(`User updated successfully`);
+                openSnackbar();
                 setTimeout(() => {
                     navigate('/admin/users');
-                }, 5000);
+                }, 4000);
                 console.log('User updated successfully');
             } catch (error) {
                 console.error('Error updating user:', error);
-                // eslint-disable-next-line
-                openSnackbar();
                 setSnackbarSeverity('error')
                 setSnackbarMsg(`Failed to update user`);
+                openSnackbar();
             }
         }
     };
-
-
-    // const handleChangeMultiple = (event: SelectChangeEvent<string>, type: 'authority' | 'module' | 'role') => {
-    //     const { value } = event.target;
-    //     const selectedValue = value as string;
-    //     let selectedId: number | null = null;
-
-    //     if (type === 'authority') {
-    //         const selectedAuthority = authoritiesUser.find(auth => auth.authorityResponse.libelle === selectedValue);
-    //         if (selectedAuthority) {
-    //             selectedId = selectedAuthority.authorityResponse.id;
-    //         }
-    //     } else if (type === 'module') {
-    //         const selectedModule = modules.find(module => module.moduleName === selectedValue);
-    //         if (selectedModule) {
-    //             selectedId = selectedModule.id;
-    //         }
-    //     } else if (type === 'role') {
-    //         const selectedRole = roles.find(role => role.libelle === selectedValue);
-    //         if (selectedRole) {
-    //             selectedId = selectedRole.id;
-    //         }
-    //     }
-
-    //     // Mettre à jour le state avec l'ID de l'élément sélectionné
-    //     if (type === 'authority') {
-    //         setSelectedAuthId(selectedId);
-    //     } else if (type === 'module') {
-    //         setSelectedModuleId(selectedId);
-    //     } else if (type === 'role') {
-    //         setSelectedRoleId(selectedId);
-    //     }
-
-    //     setAssignedAuthorities([selectedValue]);
-    //     setAssignedModules([selectedValue])
-    //     setAssignedRoles([selectedValue])
-    // };
 
     const handleChangeAuthority = (event: SelectChangeEvent<string>) => {
         const { value } = event.target;
@@ -363,6 +274,7 @@ const UserDetail = () => {
         setSelectedAuthId(selectedId);
         setAssignedAuthorities([selectedValue]);
     }
+
     const handleChangeModule = (event: SelectChangeEvent<string>) => {
         const { value } = event.target;
         const selectedValue = value as string;
@@ -371,10 +283,10 @@ const UserDetail = () => {
         if (selectedModule) {
             selectedId = selectedModule.id;
         }
-
         setSelectedModuleId(selectedId);
         setAssignedModules([selectedValue]);
     }
+
     const handleChangeRole = (event: SelectChangeEvent<string>) => {
         const { value } = event.target;
         const selectedValue = value as string;
@@ -386,305 +298,154 @@ const UserDetail = () => {
         setSelectedRoleId(selectedId);
         setAssignedRoles([selectedValue]);
     }
-    console.log(modulesUser)
-    console.log(rolesUser)
-    console.log(assignedAuthorities)
+
+    if (!userAuthorities.some(auth => auth.data === 'USER_GET_ID' && auth.isGranted)) {
+        return <Unauthorized />;
+    }
+
     return (
         <>
-            {userAuthorities.some(auth => auth.data === 'USER_GET_ID' && auth.isGranted) ?
-                (<>
-                    <BreadCrumbs to='/admin/users' text1='Users' text2='User' />
-                    <Stack sx={{ py: 2, height: '80%', marginBottom: 4, boxSizing: 'border-box', fontFamily: 'Nunito, sans serif' }} direction="column">
-                        <Paper sx={{ flex: 1, mx: 'auto', width: '80%', p: 2 }}>
-                            <Stack direction="column" spacing={1} sx={{ height: 1 }}>
-                                <Box component="form" onSubmit={handleSubmit}>
-                                    {['User Name', 'First Name', 'Last Name', 'Email', 'Phone Number'].map((field) => (
-                                        <TextField
-                                            size='small'
-                                            key={field}
-                                            label={field}
-                                            name={field}
-                                            value={formData[field] || ''}
-                                            onChange={handleChange}
-                                            margin="normal"
-                                            fullWidth
-                                            sx={{ marginBottom: 1 }}
-                                            disabled={field === 'User Name' || field === 'Phone Number'}
-                                        />
-                                    ))}
-
-                                    <Box display="flex" alignItems="center">
-                                        <FormControl fullWidth margin="normal">
-                                            <InputLabel id="group-label">Group</InputLabel>
-                                            <Select
-                                                labelId="group-label"
-                                                label="Group"
-                                                name="Group"
-                                                value={formData['Group'] || ''}
-                                                onChange={handleChange}
-                                            >
-                                                {groups.map((group) => (
-                                                    <MenuItem key={group.id} value={group.libelle}>
-                                                        {group.libelle}
-                                                    </MenuItem>
+            <BreadCrumbs to='/admin/users' text1='Users' text2='User' />
+            <Stack sx={{ py: 2, height: '80%', marginBottom: 4, boxSizing: 'border-box' }} direction="column">
+                <Paper sx={{ flex: 1, mx: 'auto', width: '80%', p: 2 }}>
+                    <Stack direction="column" spacing={1} sx={{ height: 1 }}>
+                        <Box component="form" onSubmit={handleSubmit}>
+                            {['User Name', 'First Name', 'Last Name', 'Email', 'Phone Number'].map((field) => (
+                                <TextFieldForm
+                                    key={field}
+                                    label={field}
+                                    name={field}
+                                    value={formData[field] || ''}
+                                    onChange={handleChange}
+                                    disabled={field === 'User Name' || field === 'Phone Number'}
+                                />
+                            ))}
+                            <SelectFieldFrom
+                                label='Group'
+                                name='Group'
+                                value={formData['Group'] || ''}
+                                onChange={handleChange}
+                                options={groups.map(group => ({ id: group.id, value: group.libelle }))}
+                            />
+                            <Box display="flex" alignItems="center" justifyContent='space-between' gap={4}>
+                                <FormControl fullWidth margin="normal">
+                                    <InputLabel id="required-actions-label">Required Actions</InputLabel>
+                                    <Select
+                                        labelId="required-actions-label"
+                                        label="Required Actions"
+                                        multiple
+                                        name="requiredActions"
+                                        value={formData.requiredActions || []}
+                                        onChange={handleChange}
+                                        renderValue={(selected) => (
+                                            <Box display="flex" flexWrap="wrap">
+                                                {(selected as string[]).map((value) => (
+                                                    <Chip key={value} label={value} />
                                                 ))}
-                                            </Select>
-                                        </FormControl>
-                                    </Box>
-
-                                    <Box display="flex" alignItems="center" justifyContent='space-between' gap={4}>
-                                        <FormControl fullWidth margin="normal">
-                                            <InputLabel id="required-actions-label">Required Actions</InputLabel>
-                                            <Select
-                                                labelId="required-actions-label"
-                                                label="Required Actions"
-                                                multiple
-                                                name="requiredActions"
-                                                value={formData.requiredActions || []}
-                                                onChange={handleChange}
-                                                renderValue={(selected) => (
-                                                    <Box display="flex" flexWrap="wrap">
-                                                        {(selected as string[]).map((value) => (
-                                                            <Chip key={value} label={value} />
-                                                        ))}
-                                                    </Box>
-                                                )}
-                                            >
-                                                {['VERIFY_EMAIL', 'CONFIGURE_TOTP', 'UPDATE_PASSWORD', 'TERMS_AND_CONDITIONS'].map((action) => (
-                                                    <MenuItem key={action} value={action}>
-                                                        {action}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                        {userAuthorities.some(auth => auth.data === 'USER_REQUIRED_ACTIONS_ADD' && auth.isGranted) && (<Button
-                                            onClick={() => handleAdd(formData, 'requiredActions')}
-                                            variant="contained"
-                                            color="primary"
-                                            startIcon={<Add />}
-                                        >
-                                            Add
-                                        </Button>
+                                            </Box>
                                         )}
-                                    </Box>
-
-                                    <Box display="flex" alignItems="center" justifyContent='space-between' gap={4}>                                <FormControl fullWidth margin="normal">
-                                        <InputLabel id="module-label">Module</InputLabel>
-                                        <Select
-                                            labelId="module-label"
-                                            label="Module"
-                                            name="module"
-                                            value={formData.module || ''}
-                                            onChange={handleChange}
-                                        >
-                                            {modules.map((module) => (
-                                                <MenuItem key={module.id} value={module.moduleName}>
-                                                    {module.moduleName}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                        {userAuthorities.some(auth => auth.data === 'USER_MODULE_ADD' && auth.isGranted) && (<Button
-                                            onClick={() => handleAdd(formData, 'module')}
-                                            variant="contained"
-                                            color="primary"
-                                            startIcon={<Add />}
-                                        >
-                                            Add
-                                        </Button>)}
-                                    </Box>
-
-                                    <Box display="flex" alignItems="center" justifyContent='space-between' gap={4}>                                <FormControl fullWidth margin="normal">
-                                        <InputLabel id="role-label">Role</InputLabel>
-                                        <Select
-                                            labelId="role-label"
-                                            label="Role"
-                                            name="role"
-                                            value={formData.role || ''}
-                                            onChange={handleChange}
-                                        >
-                                            {roles.map((role) => (
-                                                <MenuItem key={role.id} value={role.libelle}>
-                                                    {role.libelle}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                        {userAuthorities.some(auth => auth.data === 'USER_MODULE_ADD' && auth.isGranted) && (<Button
-                                            onClick={() => handleAdd(formData, 'role')}
-                                            variant="contained"
-                                            color="primary"
-                                            startIcon={<Add />}
-                                        >
-                                            Add
-                                        </Button>)}
-                                    </Box>
-
-                                    <Box display="flex" alignItems="center" justifyContent='space-between' gap={4}>                                <FormControl fullWidth margin="normal">
-                                        <InputLabel id="authority-label">Authority</InputLabel>
-                                        <Select
-                                            labelId="authority-label"
-                                            label="Authority"
-                                            name="authority"
-                                            value={formData.authority || ''}
-                                            onChange={handleChange}
-                                        >
-                                            {authorities.map((authority) => (
-                                                <MenuItem key={authority.id} value={authority.libelle}>
-                                                    {authority.libelle}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                        {userAuthorities.some(auth => auth.data === 'USER_ROLE_ADD' && auth.isGranted) && (<Button
-                                            onClick={() => handleAdd(formData, 'authority')}
-                                            variant="contained"
-                                            color="primary"
-                                            startIcon={<Add />}
-                                        >
-                                            Add
-                                        </Button>)}
-                                    </Box>
-                                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                                        <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 300 }}>
-                                            <InputLabel shrink htmlFor="select-AssignedModules">
-                                                Assigned Modules
-                                            </InputLabel>
-                                            <Select
-                                                native
-                                                value={assignedModules[0] || 'Assigned Modules'}
-                                                onChange={(event) => handleChangeModule(event)}
-                                                label="Assigned Modules"
-                                                inputProps={{
-                                                    id: 'select-AssignedModules',
-                                                }}
-                                            >
-                                                <option value="Assigned Modules" >Assigned Modules</option>
-                                                {modulesUser.map((auth) => (
-                                                    <option key={auth.id} value={auth.moduleName}>
-                                                        {auth.moduleName}
-                                                    </option>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                        <Box>
-                                            {selectedModuleId && (
-                                                <Box>
-                                                    <Typography variant="h6">{assignedModules[0]}</Typography>
-                                                    {userAuthorities.some(auth => auth.data === 'USER_MODULE_REMOVE' && auth.isGranted) && (
-                                                        <Button onClick={() => handleRemove(selectedModuleId, 'module')}>Remove</Button>
-                                                    )}
-                                                </Box>
-                                            )}
-                                        </Box>
-                                    </Box>
-
-                                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                                        <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 400 }}>
-                                            <InputLabel shrink htmlFor="select-AssignedRoles">
-                                                Assigned Roles
-                                            </InputLabel>
-                                            <Select
-                                                native
-                                                value={assignedRoles[0] || 'Assigned Roles'}
-                                                onChange={(event) => handleChangeRole(event)}
-                                                label="Assigned Roles"
-                                                inputProps={{
-                                                    id: 'select-AssignedRoles',
-                                                }}
-                                            >
-                                                <option value="Assigned Roles" >Assigned Roles</option>
-
-                                                {rolesUser.map((role) => (
-                                                    <option key={role.id} value={role.libelle}>
-                                                        {role.libelle}
-                                                    </option>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                        <Box>
-                                            {selectedRoleId && (
-                                                <Box>
-                                                    <Typography variant="h6">{assignedRoles[0]}</Typography>
-                                                    {userAuthorities.some(auth => auth.data === 'USER_ROLE_REMOVE' && auth.isGranted) && (
-                                                        <Button onClick={() => handleRemove(selectedRoleId, 'role')}>Remove</Button>
-                                                    )}
-                                                </Box>
-                                            )}
-                                        </Box>
-                                    </Box>
-
-                                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                                        <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 400 }}>
-                                            <InputLabel shrink htmlFor="select-AssignedAuthorities">
-                                                Assigned Authorities
-                                            </InputLabel>
-                                            <Select
-                                                native
-                                                value={assignedAuthorities[0] || 'Assigned Authorities'}
-                                                onChange={(event) => handleChangeAuthority(event)}
-                                                label="Assigned Authorities"
-                                                inputProps={{
-                                                    id: 'select-AssignedAuthorities',
-                                                }}
-                                            >
-                                                <option value="Assigned Authorities" >Assigned Authorities</option>
-                                                {authoritiesUser.map((auth) => (
-                                                    <option key={auth.authorityResponse.id} value={auth.authorityResponse.libelle}>
-                                                        {auth.authorityResponse.libelle}
-                                                    </option>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                        <Box>
-                                            {selectedAuthId && (
-                                                <Box>
-                                                    <Typography variant="h6">{assignedAuthorities[0]}</Typography>
-                                                    {userAuthorities.some(auth => auth.data === 'USER_AUTHORITY_GRANT' && auth.isGranted) && (
-                                                        <Button onClick={() => handleToggleAuthority(selectedAuthId, true)}>Grant</Button>
-                                                    )}
-                                                    {userAuthorities.some(auth => auth.data === 'USER_AUTHORITY_REVOKE' && auth.isGranted) && (
-                                                        <Button onClick={() => handleToggleAuthority(selectedAuthId, false)}>Revoke</Button>
-                                                    )}
-                                                    {userAuthorities.some(auth => auth.data === 'USER_AUTHORITY_REMOVE' && auth.isGranted) && (
-                                                        <Button onClick={() => handleRemove(selectedAuthId, 'authority')}>Remove</Button>
-                                                    )}
-                                                </Box>
-                                            )}
-                                        </Box>
-                                    </Box>
-
-                                    <Box display="flex" alignItems="center" sx={{ mt: 2 }}>
-                                        <FormControlLabel
-                                            control={
-                                                <Switch
-                                                    checked={formData['Status'] === 'Activated'}
-                                                    onChange={userAuthorities.some(auth => auth.data === 'USER_ENABLE_DISABLE' && auth.isGranted) && handleSwitchChange}
-                                                    name="Status"
-                                                    color="primary"
-                                                />
-                                            }
-                                            label="Status"
-                                        />
-                                    </Box>
-
-                                    {userAuthorities.some(auth => auth.data === 'USER_UPDATE' && auth.isGranted) && (<Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                                        Save Changes
-                                    </Button>)}
-                                </Box>
-                            </Stack >
-                        </Paper >
+                                    >
+                                        {['VERIFY_EMAIL', 'CONFIGURE_TOTP', 'UPDATE_PASSWORD', 'TERMS_AND_CONDITIONS'].map((action) => (
+                                            <MenuItem key={action} value={action}>
+                                                {action}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                {userAuthorities.some(auth => auth.data === 'USER_REQUIRED_ACTIONS_ADD' && auth.isGranted) && (<Button
+                                    onClick={() => handleAdd(formData, 'requiredActions')}
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<Add />}
+                                >
+                                    Add
+                                </Button>
+                                )}
+                            </Box>
+                            <SelectFieldFrom
+                                label='Module'
+                                name='module'
+                                value={formData.module || ''}
+                                onChange={handleChange}
+                                options={modules.map(module => ({ id: module.id, value: module.moduleName }))}
+                                showAddButton
+                                handleAdd={() => handleAdd(formData, 'module')}
+                                userAuthorities={userAuthorities}
+                                addAuthority='USER_MODULE_ADD'
+                            />
+                            <SelectFieldFrom
+                                label='Role'
+                                name='role'
+                                value={formData.role || ''}
+                                onChange={handleChange}
+                                options={roles.map(role => ({ id: role.id, value: role.libelle }))}
+                                showAddButton
+                                handleAdd={() => handleAdd(formData, 'role')}
+                                userAuthorities={userAuthorities}
+                                addAuthority='USER_ROLE_ADD'
+                            />
+                            <SelectFieldFrom
+                                label='Authority'
+                                name='authority'
+                                value={formData.authority || ''}
+                                onChange={handleChange}
+                                options={authorities.map(authority => ({ id: authority.id, value: authority.libelle }))}
+                                showAddButton
+                                handleAdd={() => handleAdd(formData, 'authority')}
+                                userAuthorities={userAuthorities}
+                                addAuthority='USER_AUTHORITY_GRANT'
+                            />
+                            <AssignedItems
+                                label='Modules'
+                                selectedItemId={selectedModuleId}
+                                removePermission='USER_MODULE_REMOVE'
+                                assignedItems={assignedModules}
+                                itemsList={modulesUser.map(module => ({ id: module.id, libelle: module.moduleName }))}
+                                userAuthorities={userAuthorities}
+                                handleChange={handleChangeModule}
+                                handleRemove={() => handleRemove(selectedModuleId, 'module')}
+                            />
+                            <AssignedItems
+                                label='Roles'
+                                selectedItemId={selectedRoleId}
+                                removePermission='USER_ROLE_REMOVE'
+                                assignedItems={assignedRoles}
+                                itemsList={rolesUser.map(role => ({ id: role.id, libelle: role.libelle }))}
+                                userAuthorities={userAuthorities}
+                                handleChange={handleChangeRole}
+                                handleRemove={() => handleRemove(selectedRoleId, 'role')}
+                            />
+                            <AssignedItems
+                                label='Authorities'
+                                selectedItemId={selectedAuthId}
+                                removePermission='USER_AUTHORITY_REMOVE'
+                                assignedItems={assignedAuthorities}
+                                itemsList={authoritiesUser.map(auth => ({ id: auth.authorityResponse.id, libelle: auth.authorityResponse.libelle }))}
+                                userAuthorities={userAuthorities}
+                                handleChange={handleChangeAuthority}
+                                handleRemove={() => handleRemove(selectedAuthId, 'authority')}
+                                handleToggle={handleToggleAuthority}
+                                togglePermissions={{ grant: 'USER_AUTHORITY_GRANT', revoke: 'USER_AUTHORITY_REVOKE' }}
+                            />
+                            <SwitchForm
+                                checked={formData['Status'] === 'Activated'}
+                                onChange={userAuthorities.some(auth => auth.data === 'USER_ENABLE_DISABLE' && auth.isGranted) && handleSwitchChange}
+                                label='Status'
+                            />
+                            <ButtonSaveChanges
+                                userAuthorities={userAuthorities}
+                                updateAuthority='USER_UPDATE'
+                            />
+                        </Box>
                     </Stack >
-                    <SnackBar
-                        open={isOpenSnackbar}
-                        severity={snackbarSeverity}
-                        onClose={closeSnackbar}
-                        text={snackbarMsg}
-                    />
-                </>) : (
-                    <Unauthorized />
-                )
-            }
+                </Paper >
+            </Stack >
+            <SnackBar
+                open={isOpenSnackbar}
+                severity={snackbarSeverity}
+                onClose={closeSnackbar}
+                text={snackbarMsg}
+            />
         </>
     );
 };

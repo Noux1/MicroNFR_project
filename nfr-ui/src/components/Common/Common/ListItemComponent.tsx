@@ -21,7 +21,7 @@ const ListItemComponent: React.FC<Props> = ({ selected, onClick, to, variant, ic
     const { mode } = useModeStore();
 
     return (
-        <ListItem disablePadding sx={{ marginBottom: '5px', fontFamily: 'Nunito, sans-serif' }} >
+        <ListItem disablePadding sx={{ marginBottom: '5px' }} >
             {
                 openSidebar ?
                     (<ListItemButton selected={selected} onClick={onClick} sx={{ borderRadius: '5px', marginX: openSidebar ? '6px' : '0px', height: '35px' }} >
@@ -33,7 +33,7 @@ const ListItemComponent: React.FC<Props> = ({ selected, onClick, to, variant, ic
                                 <Typography
                                     variant={variant}
                                     sx={{
-                                        fontFamily: 'Nunito, sans-serif', fontWeight: fontWeight, marginLeft: '-16px'
+                                        fontWeight: fontWeight, marginLeft: '-16px'
                                     }}
                                 > {name}
                                 </Typography>

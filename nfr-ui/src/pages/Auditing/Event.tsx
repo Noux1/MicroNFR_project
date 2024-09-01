@@ -1,9 +1,9 @@
-import { Grid, Paper, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { CircularProgress, Grid, Paper, Stack, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { EventType, useEventStore } from '../../store/AuditStore/EventStore';
 import Descriptions from './descriptions';
-import EventItem from '../../components/Common/Reusable-components/EventItem';
+import EventItem from '../../components/Common/Reusable-components/TextItem';
 import BreadCrumbs from '../../components/Common/Reusable-components/BreadCrumbs';
 
 const Event = () => {
@@ -27,41 +27,36 @@ const Event = () => {
         fetchEvent()
     }, [eventId, getEventById])
 
-
-
-    // const event = {
-    //     entityId: 1,
-    //     entityName: 'entity',
-    //     user: 'siham',
-    //     action: 'delete',
-    //     date: new Date(),
-    //     moduleName: 'audit',
-    //     description: 'gsdufhiuds'
-    // }
-
     if (!event) {
         return <Stack
-            sx={{ py: 2, height: '100%', boxSizing: 'border-box', fontFamily: 'Nunito, sans serif' }}
+            sx={{ py: 2, height: '100%', boxSizing: 'border-box' }}
             direction="column"
         >
-            <Paper sx={{ flex: 1, mx: 'auto', width: '90%', p: 1 }}>
-                <Typography variant="h6" sx={{ fontFamily: 'Nunito, sans-serif' }}>
-                    Loading...
-                </Typography>
-            </Paper>
-        </Stack>
+            <Paper sx={{ flex: 1, mx: 'auto', width: '80%', p: 2 }}>
+                <Stack
+                    direction="column"
+                    sx={{
+                        height: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                    <CircularProgress />
+                </Stack>
+            </Paper >
+        </Stack >
     }
 
     return (
         <>
             <BreadCrumbs to='/audit/events' text1='Events' text2='Event' />
             <Stack
-                sx={{ py: 2, height: '90%', boxSizing: 'border-box', fontFamily: 'Nunito, sans serif', marginBottom: 4 }}
+                sx={{ py: 2, height: '90%', boxSizing: 'border-box', marginBottom: 4 }}
                 direction="column"
             >
                 <Paper sx={{ flex: 1, mx: 'auto', width: '80%', p: 2 }}>
                     <Stack direction="column" spacing={1} sx={{ height: 1 }}>
-                        <Typography variant="h5" sx={{ fontFamily: 'Nunito, sans-serif', paddingX: 1 }}>{event.entityName.charAt(0).toUpperCase() + event.entityName.slice(1)}</Typography>
+                        <Typography variant="h5" sx={{ paddingX: 1 }}>{event.entityName.charAt(0).toUpperCase() + event.entityName.slice(1)}</Typography>
                         <Grid container>
                             <Grid item md={6}>
                                 <EventItem text1='User' text2={event.utilisateur} />
@@ -79,7 +74,7 @@ const Event = () => {
                         </Grid>)}
                         {event.data && (<Grid container>
                             <Grid item>
-                                <Typography variant="h5" sx={{ fontFamily: 'Nunito, sans-serif', paddingTop: 1 }}>
+                                <Typography variant="h5" sx={{ paddingTop: 1 }}>
                                     Description
                                 </Typography>
                                 <Descriptions data={event.data} />

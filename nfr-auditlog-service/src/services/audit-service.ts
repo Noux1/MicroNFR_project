@@ -42,7 +42,7 @@ export class AuditService {
     }
   }
 
-  public async filterAuditEvents(utilisateur: string, action: string, moduleName: string, entity: string, startDate?: Date, endDate?: Date): Promise<IEvent[]> {
+  public async filterAuditEvents(utilisateur: string, action: string, moduleName: string, entityName: string, startDate?: Date, endDate?: Date): Promise<IEvent[]> {
     const pipeline: any[] = [];
 
     const matchStage: any = {};
@@ -66,8 +66,8 @@ export class AuditService {
     } else if (startDate) {
       matchStage.date = { $gte: startDate };
     }
-    if (entity) {
-      matchStage.entity = entity
+    if (entityName) {
+      matchStage.entityName = entityName
     }
 
     if (Object.keys(matchStage).length > 0) {
